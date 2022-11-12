@@ -162,6 +162,15 @@ test-html: exec-tests
 	${py} -m coverage html  --rcfile=.coveragerc && ${browser} tests/coverage_html/index.html &
 
 
+## target: test-docker                    - Run tests in docker container
+.PHONY: test-docker
+test-docker:
+		docker compose up test
+		docker-compose down
+		
+
+
+
 
 ## target: clean-py                     - Remove generated python files
 .PHONY: clean-py
