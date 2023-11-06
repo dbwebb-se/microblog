@@ -1,0 +1,21 @@
+# Use a base image with the necessary tools and dependencies for testing
+FROM python:3.8
+
+# Set the working directory
+WORKDIR /microblog
+
+COPY . .
+# Copy both prod.txt and test.txt
+COPY requirements/prod.txt requirements/test.txt /
+
+# Install dependencies from test.txt
+RUN pip install -r /test.txt
+
+# Copy the test_startup.sh script into the container
+COPY test_startup.sh /test_startup.sh
+
+# Make the script executable
+RUN chmod +x /test_startup.sh
+
+# Copy the application code excluding the directories defined in .dockerignore
+

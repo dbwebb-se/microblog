@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  app:
+    image: prod
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306"
+
+  test:
+    image: test
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_test
+    volumes:
+      - ./app:/microblog/app
+      - ./tests:/microblog/tests
+    depends_on:
+      - db
+    command: ["./test_startup.sh"]  # Run the test_startup.sh script
