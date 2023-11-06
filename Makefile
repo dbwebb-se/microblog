@@ -93,7 +93,8 @@ info:
 # target: validate                     - Validate code with pylint
 .PHONY: validate
 validate:
-	@pylint --rcfile=.pylintrc app tests
+	@/home/microblog/.venv/bin/pylint --rcfile=.pylintrc app tests
+
 
 
 
