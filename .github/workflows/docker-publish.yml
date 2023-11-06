@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.ref_name }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}
