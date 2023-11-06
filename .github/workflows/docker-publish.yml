@@ -22,8 +22,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image for production
         uses: docker/build-push-action@v5
         with:
+          context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}
+          file: ./docker/Dockerfile_prod
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}-prod
+
+      - name: Build and push Docker image for testing
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          file: ./docker/Dockerfile_prod
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}-test
