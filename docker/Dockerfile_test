@@ -1,0 +1,22 @@
+#syntax=docker/dockerfile:1.4
+FROM python:3.8-alpine
+
+WORKDIR /home/microblog
+
+COPY requirements/prod.txt ./
+COPY requirements/test.txt ./
+COPY run_tests.sh ./
+COPY Makefile ./
+COPY .pylintrc ./
+COPY pytest.ini ./
+
+RUN <<-EOF
+    apk add --no-cache make && \
+    python -m venv .venv && \
+    .venv/bin/pip3 install --no-cache-dir -r test.txt && \
+    chmod +x run_tests.sh
+EOF
+
+ENV PATH="/home/microblog/.venv/bin:$PATH"
+
+ENTRYPOINT ["./run_tests.sh"]
