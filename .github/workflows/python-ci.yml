@@ -1,6 +1,7 @@
 name: Python CI Tests
 
 on:
+  workflow_call:
   push:
     branches: ["development", "master"]
   pull_request:
