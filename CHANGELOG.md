@@ -1,5 +1,17 @@
 # Changelog for microblog
 
+## Version 0.1.1
+
+### Added
+- **Docker Compose Setup**: Introduced `docker-compose.yml` to orchestrate the application, database, and testing containers. This enhancement improves local development and CI/CD processes by simplifying multi-container setups.
+- **Dockerfile for Testing**: Added `Dockerfile_test` in the `docker` directory. This Dockerfile creates a dedicated environment for testing, ensuring tests run in an isolated and consistent setting.
+
+### Chore
+- **.dockerignore File**: Created a `.dockerignore` file in the `docker` directory. This file optimizes the Docker build context by excluding the `app` and `tests` directories, leading to faster image builds.
+
+### Feature
+- **Test Startup Script**: Added `test_startup.sh` script for executing tests in a Docker container. This script facilitates automated and reproducible test runs in a containerized environment.
+
 ## Version 0.1.0
 
 ### Added
