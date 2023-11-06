@@ -19,11 +19,5 @@ jobs:
     - name: Install Testing Dependencies
       run: pip install -r requirements/test.txt
 
-    - name: Run Unit Tests
-      run: python -m unittest discover tests/unit
-
-    - name: Run Integration Tests
-      run: python -m unittest discover tests/integration
-
-    - name: Validate Code
-      run: flake8
+    - name: Run Tests
+      run: pytest
