@@ -1,0 +1,31 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Välj önskad miljö
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8  # Välj önskad Python-version
+
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run Unit Tests
+      run: python -m unittest discover tests/unit
+
+    - name: Run Integration Tests
+      run: python -m unittest discover tests/integration
+
+    - name: Validate Code
+      run: flake8
