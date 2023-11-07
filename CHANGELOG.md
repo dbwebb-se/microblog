@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- **Feat:** User Follow/Unfollow Functionality [PR 12 - "Implement User Follow/Unfollow Functionality"](https://github.com/FalkenDev/microblog/pull/12)
+
 - _No unreleased changes at this time._
 
 ## [0.1.0] - 2023-11-06
