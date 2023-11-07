@@ -1,0 +1,39 @@
+name: Docker CD Publish Image
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  python-ci:
+    uses: ./.github/workflows/python-ci.yml
+
+  build-and-push:
+    needs: python-ci
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker image for production
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          file: ./docker/Dockerfile_prod
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}-prod
+
+      - name: Build and push Docker image for testing
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          file: ./docker/Dockerfile_prod
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}-test
