@@ -1,5 +1,20 @@
 # Changelog for microblog
 
+## Version 0.1.4
+
+### Feature
+
+- **.gitattributes:**
+  - Added .gitattributes file with LF line endings for boot.sh, ensuring consistent line endings across different platforms.
+
+- **docker-compose.yml:**
+  - Introduced DATABASE_URL environment variable in service for dynamic database connection configuration.
+
+### Refactor
+
+- **config.py:**
+  - Removed hardcoded SQLALCHEMY_DATABASE_URI in ProdConfig for enhanced security.
+
 ## Version 0.1.3
 
 ### Chore
