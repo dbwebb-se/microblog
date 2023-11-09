@@ -3,12 +3,10 @@
 ## Version 0.1.2
 
 ### Chore
-- **server.ts:** Changed port variable case from lowercase `port` to uppercase `PORT` for consistency.
 - **config.py:** Added `SQLALCHEMY_DATABASE_URI` for production configuration.
 - **boot.sh:** Added sleep and improved upgrade command for a more robust boot script.
 
 ### Feature
-- **server.ts:** Added support for `process.env.PORT` environment variable.
 - **docker-compose.yml:** Updated MySQL ports and volumes configuration for better compatibility.
 - **init.sql:** Added initialization SQL script for database and user
 
