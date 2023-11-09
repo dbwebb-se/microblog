@@ -1,7 +1,8 @@
 name: Continuous Delivery
 
 on:
-  push:
+  release:
+    types: [created]
   
 jobs:
   ci:
