@@ -1,5 +1,16 @@
 # Changelog for microblog
 
+## Version 0.1.3
+
+### Chore
+
+- **boot.sh:**
+  - Improved readability and added comments for better understanding of the script.
+
+- **docker-compose.yml:**
+  - Updated MySQL image to `mysql/mysql-server:5.7`.
+  - Updated volume path for MySQL initialization script.
+
 ## Version 0.1.2
 
 ### Chore
