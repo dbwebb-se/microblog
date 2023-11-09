@@ -25,6 +25,9 @@ class ProdConfig(Config):
     """Production configuration"""
     ENV = "production"
     DEBUG = False
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{os.environ.get('MYSQL_USER')}:{os.environ.get('MYSQL_PASSWORD')}@db/{os.environ.get('MYSQL_DATABASE')}?charset=utf8mb4"
+
+    
 
 class DevConfig(Config):
     """Development configuration"""

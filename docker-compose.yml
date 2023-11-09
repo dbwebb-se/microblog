@@ -2,6 +2,9 @@ version: "3.9"
 services:
   app:
     image: prod
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_prod
     depends_on:
       - db
     environment:
@@ -9,6 +12,8 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "5000:5000"
 
   db:
     image: mysql
@@ -16,7 +21,10 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
-      - "3306"
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
 
   test:
     image: test
@@ -28,4 +36,7 @@ services:
       - ./tests:/microblog/tests
     depends_on:
       - db
-    command: ["./test_startup.sh"]  # Run the test_startup.sh script
+    command: ["./test_startup.sh"]
+
+volumes:
+  db_data:
