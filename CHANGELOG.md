@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- **Feat:** User Follow/Unfollow Functionality [PR 12 - "Implement User Follow/Unfollow Functionality"](https://github.com/FalkenDev/microblog/pull/12)
-
 - _No unreleased changes at this time._
+
+## [1.0.0] - 2023-11-11
+
+**Branch:** Push development branch to master branch to reflect kmom01 is done [PR 14 - "Development to Master (kmom01)"](https://github.com/FalkenDev/microblog/issues/14)
+**Docs:** Changelog updated to reflect the new release [PR 13 - "Changelog Update"](https://github.com/FalkenDev/microblog/issues/13)
+
+## [0.2.0] - 2023-11-08
+
+- **Feat:** User Follow/Unfollow Functionality [PR 12 - "Implement User Follow/Unfollow Functionality"](https://github.com/FalkenDev/microblog/pull/12)
 
 ## [0.1.0] - 2023-11-06
 
