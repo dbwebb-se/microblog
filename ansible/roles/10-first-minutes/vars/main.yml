@@ -1,6 +1,11 @@
 ---
 packages:
-    -   fail2ban
-    -   tmux
-    -   git
-    -   unattended-upgrades
+  - fail2ban
+  - tmux
+  - git
+  - unattended-upgrades
+
+users_users:
+  - key: azure_james.pub
+  - key: azure_joel.pub
+  - key: azure_kasper.pub
