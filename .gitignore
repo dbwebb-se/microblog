@@ -108,7 +108,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-# Asnible and Makefile own data
-ansible/group_vars/all.yml
-Makefile
