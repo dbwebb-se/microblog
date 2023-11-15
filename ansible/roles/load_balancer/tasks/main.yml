@@ -1,0 +1,53 @@
+---
+- name: Install nginx
+  apt: name=nginx state=latest
+
+- name: Install certbot
+  pip:
+    name:
+    - certbot
+    - certbot-nginx
+  executable: pip3
+  tags:
+    - nginx
+    - certbot
+
+- name: Register certbot
+  shell: |
+    certbot -n register --agree-tos --email <kaspers mail?>
+    touch /etc/letsencrypt/.registered
+  args:
+    creates: /etc/letsencrypt/.registered
+  tags:
+    - nginx
+    - certbot
+
+- name: 'Get certificate'
+  command: '/usr/local/bin/certbot -n --nginx certonly -d {{ domain_name }}'
+  args:
+    creates: '/etc/letsencrypt/live/{{ domain_name }}'
+  ignore_errors: true
+  tags:
+    - nginx
+    - certbot
+
+- name: Copy ngnínx.conf.j2
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: Copy load-balancer.conf.j2
+  template:
+    src: templates/load-balancer.conf.j2
+    dest: /etc/nginx/sites-available/load-balancer.conf
+
+- name: Link load-balancer
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    dest: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link
+
+- name: Start nginx
+  service:
+  name: nginx
+  state: started
