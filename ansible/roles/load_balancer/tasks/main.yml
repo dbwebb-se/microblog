@@ -1,35 +1,22 @@
 ---
+
 - name: Install nginx
   apt: name=nginx state=latest
 
-- name: Install certbot
-  pip:
-    name:
-    - certbot
-    - certbot-nginx
-  executable: pip3
-  tags:
-    - nginx
-    - certbot
+- name: Upgrade system
+  apt: upgrade=dist update_cache=yes
 
-- name: Register certbot
-  shell: |
-    certbot -n register --agree-tos --email <kaspers mail?>
-    touch /etc/letsencrypt/.registered
-  args:
-    creates: /etc/letsencrypt/.registered
-  tags:
-    - nginx
-    - certbot
+- name: Install nginx
+  apt: name=nginx state=latest
 
-- name: 'Get certificate'
-  command: '/usr/local/bin/certbot -n --nginx certonly -d {{ domain_name }}'
-  args:
-    creates: '/etc/letsencrypt/live/{{ domain_name }}'
-  ignore_errors: true
-  tags:
-    - nginx
-    - certbot
+- name: install letsencrypt
+  apt: name=letsencrypt state=latest
+
+- name: create letsencrypt directory
+  file: name=/var/www/letsencrypt state=directory
+
+- name: Remove default nginx config
+  file: name=/etc/nginx/sites-enabled/default state=absent
 
 - name: Copy ngnínx.conf.j2
   template:
@@ -47,7 +34,12 @@
     dest: /etc/nginx/sites-enabled/load-balancer.conf
     state: link
 
-- name: Start nginx
+- name: Create letsencrypt certificate
+  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m jopl16@student.bth.se --agree-tos -d {{ domain_name }}
+  args:
+    creates: /etc/letsencrypt/live/{{ domain_name }}
+
+- name: Restart nginx
   service:
-  name: nginx
-  state: started
+    name: nginx
+    state: restarted
