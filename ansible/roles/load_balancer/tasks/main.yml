@@ -1,19 +1,26 @@
 ---
-
-- name: Install nginx
-  apt: name=nginx state=latest
-
 - name: Upgrade system
   apt: upgrade=dist update_cache=yes
 
 - name: Install nginx
   apt: name=nginx state=latest
 
-- name: install letsencrypt
-  apt: name=letsencrypt state=latest
+# - name: Stop nginx
+#   service: 
+#       name: nginx 
+#       state: stopped
 
-- name: create letsencrypt directory
-  file: name=/var/www/letsencrypt state=directory
+- name: Ensure Python is installed
+  raw: test -e /usr/bin/python || (apt-get update -y && apt-get install -y python)
+
+- name: Ensure Pip is installed
+  raw: test -e /usr/bin/pip || (apt-get update -y && apt-get install -y python-pip)
+
+- name: Install certbot
+  apt: name=python-certbot-nginx state=latest
+
+- name: Get new cert if it is not already there.
+  shell: "certbot certonly --nginx --noninteractive --expand --agree-tos --email jopl16@student.bth.se -d {{ domain_name }} -d www.{{ domain_name }}"
 
 - name: Remove default nginx config
   file: name=/etc/nginx/sites-enabled/default state=absent
@@ -33,11 +40,6 @@
     src: /etc/nginx/sites-available/load-balancer.conf
     dest: /etc/nginx/sites-enabled/load-balancer.conf
     state: link
-
-- name: Create letsencrypt certificate
-  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m jopl16@student.bth.se --agree-tos -d {{ domain_name }}
-  args:
-    creates: /etc/letsencrypt/live/{{ domain_name }}
 
 - name: Restart nginx
   service:
