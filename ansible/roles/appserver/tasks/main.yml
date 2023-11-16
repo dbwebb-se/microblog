@@ -1,0 +1,10 @@
+---
+- name: Start Microblog Container
+  docker_container:
+    name: microblog
+    image: falkendev/microblog:0.2.0-prod
+    env:
+      DATABASE_URL: "mysql+pymysql://microblog:password@{{ groups['database'][0] }}:3306/microblog"
+    ports:
+      - "5000:5000"
+    restart_policy: always
