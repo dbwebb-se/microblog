@@ -1,0 +1,42 @@
+---
+- name: Upgrade system
+  apt: upgrade=dist update_cache=yes
+
+- name: Install nginx
+  apt: name=nginx state=latest
+
+- name: Ensure Python is installed
+  raw: test -e /usr/bin/python || (apt-get update -y && apt-get install -y python)
+
+- name: Ensure Pip is installed
+  raw: test -e /usr/bin/pip || (apt-get update -y && apt-get install -y python-pip)
+
+- name: Install certbot
+  apt: name=python-certbot-nginx state=latest
+
+- name: Install cert
+  shell: "certbot certonly --nginx --noninteractive --expand --agree-tos --email {{ admin_email }} -d {{ domain_name }} -d www.{{ domain_name }}"
+
+- name: Remove default nginx config
+  file: name=/etc/nginx/sites-enabled/default state=absent
+
+- name: Copy ngnínx.conf.j2
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: Copy load-balancer.conf.j2
+  template:
+    src: templates/load-balancer.conf.j2
+    dest: /etc/nginx/sites-available/load-balancer.conf
+
+- name: Link load-balancer
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    dest: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
