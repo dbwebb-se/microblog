@@ -13,6 +13,8 @@ vmtags:
 
 pub_ssh_key_location: "/home/falkendev/.ssh/azure"
 
+lb_method: least_conn
+
 server_user: "deploy"
 server_user_pass: "devopsbth"
 server_user_groups:
