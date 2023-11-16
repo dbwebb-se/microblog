@@ -19,8 +19,8 @@
 - name: Install certbot
   apt: name=python-certbot-nginx state=latest
 
-- name: Get new cert if it is not already there.
-  shell: "certbot certonly --nginx --noninteractive --expand --agree-tos --email jopl16@student.bth.se -d {{ domain_name }} -d www.{{ domain_name }}"
+- name: Install cert
+  shell: "certbot certonly --nginx --noninteractive --expand --agree-tos --email {{ admin_email }} -d {{ domain_name }} -d www.{{ domain_name }}"
 
 - name: Remove default nginx config
   file: name=/etc/nginx/sites-enabled/default state=absent
