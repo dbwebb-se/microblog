@@ -11,7 +11,6 @@ from app.main import bp
 import os
 
 
-
 @bp.before_request
 def before_request():
     """
@@ -23,10 +22,9 @@ def before_request():
         db.session.commit()
 
 
-
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def index():
     """
     Route for index page
@@ -44,12 +42,14 @@ def index():
     return render_template("index.html", title='Home Page', form=form,
                            posts=posts)
 
+
 @bp.route('/app_version')
 def app_version():
     """
     Route for explore
     """
-    return {"app_version": os.environ["APP_VERSION"]}
+    return {"app_version":  os.environ.get('APP_VERSION', 'unknown')}
+
 
 @bp.route('/explore')
 @login_required
@@ -59,7 +59,6 @@ def explore():
     """
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('index.html', title='Explore', posts=posts)
-
 
 
 @bp.route('/user/<username>')
@@ -73,7 +72,6 @@ def user(username):
     return render_template('user.html', user=user_, posts=posts)
 
 
-
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -81,7 +79,7 @@ def edit_profile():
     Route for editing user profile
     """
     form = EditProfileForm(current_user.username)
-    if form.validate_on_submit(): #pylint: disable=no-else-return
+    if form.validate_on_submit():  # pylint: disable=no-else-return
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
@@ -92,6 +90,7 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
 
 @bp.route('/follow/<username>')
 @login_required
@@ -110,6 +109,7 @@ def follow(username):
     db.session.commit()
     flash(f'You are following {username}!')
     return redirect(url_for('main.user', username=username))
+
 
 @bp.route('/unfollow/<username>')
 @login_required
