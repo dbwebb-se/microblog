@@ -30,8 +30,7 @@ jobs:
           push: true
           file: ./docker/Dockerfile_prod
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/microblog:${{ github.event.release.tag_name }}-prod
-          build-args: |
-            APP_VERSION=${{ github.event.release.tag_name }}
+          build-args: APP_VERSION=${{ github.event.release.tag_name }}
 
       - name: Build and push Docker image for testing
         uses: docker/build-push-action@v5

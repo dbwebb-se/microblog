@@ -10,6 +10,8 @@ from app.models import User, Post
 from app.main import bp
 import os
 
+APP_VERSION = os.environ.get('APP_VERSION', 'No version set')
+
 
 @bp.before_request
 def before_request():
@@ -46,9 +48,9 @@ def index():
 @bp.route('/app_version')
 def app_version():
     """
-    Route for explore
+    Route for getting the current version of the application
     """
-    return {"app_version":  os.environ.get('APP_VERSION', 'unknown')}
+    return {"app_version": APP_VERSION}
 
 
 @bp.route('/explore')
