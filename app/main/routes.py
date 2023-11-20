@@ -8,6 +8,7 @@ from app import db
 from app.main.forms import EditProfileForm, PostForm
 from app.models import User, Post
 from app.main import bp
+import os
 
 
 
@@ -42,6 +43,13 @@ def index():
     posts = current_user.followed_posts().all()
     return render_template("index.html", title='Home Page', form=form,
                            posts=posts)
+
+@bp.route('/app_version')
+def app_version():
+    """
+    Route for explore
+    """
+    return {"app_version": os.environ["APP_VERSION"]}
 
 @bp.route('/explore')
 @login_required

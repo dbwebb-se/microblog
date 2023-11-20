@@ -2,8 +2,8 @@
 - name: Rolling update for Microblog Application
   hosts: appserver
   serial: 1 # Kör en server i taget
+  vars:
     dockerhub_username: "falkendev"
-    github_release_tag: "0.2.0"
     ansible_python_interpreter: /usr/bin/python3
   remote_user: deploy
   become: yes
