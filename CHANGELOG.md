@@ -7,7 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [Unreleased]
+- _No unreleased changes at this time._
+
+## [2.0.0] - 2023-11-20
+
+- **Branch:** Push development branch to master branch to reflect kmom02 is done [PR 36](https://github.com/FalkenDev/microblog/pull/36)
+- **Docs:** Changelog updated to reflect the new release (Kmom02) - [PR 37](https://github.com/FalkenDev/microblog/pull/37)
+
+## [1.1.3] - 2023-11-20
+
+### Added
+
+- **Feat:** Added app_version env and arg in dockerfile_prod - [PR 35](https://github.com/FalkenDev/microblog/pull/35)
+
+## [1.1.2] - 2023-11-20
+
+### Changed
+
+- **Test** - Test code to see if the appservers in azure updates - [PR 34](https://github.com/FalkenDev/microblog/pull/34)
+
+## [1.1.1] - 2023-11-20
+
+### Fixed
+
+- **Fix:** Rename DOCKER_TAG to APP_VERSION - [PR 32](https://github.com/FalkenDev/microblog/pull/32)
+- **Fix:** Trying to fix app version route - [PR 33](https://github.com/FalkenDev/microblog/pull/33)
+
+## [1.1.0] - 2023-11-20
 
 ### Added
 
@@ -23,6 +49,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Build:** Added published_ports for appservers to connect to mysql - [PR 21](https://github.com/FalkenDev/microblog/pull/21)
 - **Build:** Added playbook for appserver for deployment - [PR 21](https://github.com/FalkenDev/microblog/pull/21)
 - **Build:** Added task to start the microblog docker container - [PR 21](https://github.com/FalkenDev/microblog/pull/21)
+- **Build:** Workflow file for deploying release - [PR 24](https://github.com/FalkenDev/microblog/pull/24)
+- **Feat:** Creates DNS A records for appservers - [PR 24](https://github.com/FalkenDev/microblog/pull/24)
+- **Fix:** Added subdomain hosts - [PR 24](https://github.com/FalkenDev/microblog/pull/24)
+- **Feat:** Added subdomain for the database - [PR 25](https://github.com/FalkenDev/microblog/pull/25)
 
 ### Changed
 
@@ -32,11 +62,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Build:** Updated to look for azure ssh keys using users_users var for the file names - [PR 17](https://github.com/FalkenDev/microblog/pull/17)
 - **Chore:** Updated .gitignore with ansible/group_vars/all.yml and Makefile - [PR 21](https://github.com/FalkenDev/microblog/pull/21)
 - **Build:** Moved the pip3 install and docker sdk to docker-install ansible - [PR 21](https://github.com/FalkenDev/microblog/pull/21)
+- **Docs:** Updated Changelog to reflect the new builds and fixes - [PR 22](https://github.com/FalkenDev/microblog/pull/22)
+- **Build:** Playbook for updating docker images - [PR 24](https://github.com/FalkenDev/microblog/pull/24)
 
 ### Fixed
 
 - **Dbwebb:** Small fixes - [PR 15](https://github.com/FalkenDev/microblog/pull/15)
 - **Build:** Fixed python interpreter .venv to use just venv - [PR 17](https://github.com/FalkenDev/microblog/pull/17)
+- **Fix:** - Gitignore fix - [PR 23](https://github.com/FalkenDev/microblog/pull/23)
+- **Fix:** Fixed subdomain hosts - [PR 24](https://github.com/FalkenDev/microblog/pull/24)
 
 ### Removed
 
