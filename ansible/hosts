@@ -1,2 +1,6 @@
 [local]
 localhost ansible_connection=local
+
+[appserver]
+appserver1.taylordevops.live ansible_user=deploy
+appserver2.taylordevops.live ansible_user=deploy
