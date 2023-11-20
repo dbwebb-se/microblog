@@ -62,6 +62,18 @@
   delegate_to: localhost
   when: iname == 'appserver2'
 
+- name: Ensure "A" records for database
+  azure_rm_dnsrecordset:
+    resource_group: "{{ resource_group }}"
+    relative_name: database
+    zone_name: "{{ domain_name }}"
+    record_type: A
+    state: present
+    records:
+      - entry: "{{ output_ip_address.state.ip_address }}"
+  when: iname == 'database'
+  delegate_to: localhost
+
 - name: Create VM
   azure_rm_virtualmachine:
     resource_group: "{{ resource_group }}"
