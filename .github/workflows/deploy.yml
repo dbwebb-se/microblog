@@ -5,8 +5,13 @@ on:
     types: [created]
 
 jobs:
+  docker-publish:
+    uses: ./.github/workflows/docker-publish.yml
+
   deploy:
+    needs: docker-publish
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

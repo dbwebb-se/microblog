@@ -1,6 +1,7 @@
 name: Docker CD Publish Image
 
 on:
+  workflow_call:
   release:
     types: [created]
 
