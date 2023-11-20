@@ -50,7 +50,7 @@ def app_version():
     """
     Route for explore
     """
-    return {"app_version": APP_VERSION, "Kursmoment": "Kmom02"}
+    return {"app_version": APP_VERSION}
 
 
 @bp.route('/explore')
