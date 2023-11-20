@@ -48,7 +48,7 @@ def index():
 @bp.route('/app_version')
 def app_version():
     """
-    Route for getting the current version of the application
+    Route for explore
     """
     return {"app_version": APP_VERSION}
 
