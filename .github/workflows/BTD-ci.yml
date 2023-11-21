@@ -24,12 +24,17 @@ jobs:
           sudo apt-get install make
           pip install bandit
           curl -sfL https://raw.githubusercontent.com/goodwithtech/dockle/master/install.sh | sh -s -- -b /usr/local/bin
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
 
       - name: Run Bandit
         run: make bandit-test
 
-      # - name: Run Trivy
-      #   run: trivy-test
+      - name: Run Trivy
+        run: make trivy-test TAG=${{ github.event.release.tag_name }}-prod
 
       - name: Run Dockle
         run: make dockle-test TAG=${{ github.event.release.tag_name }}-prod
