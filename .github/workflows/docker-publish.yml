@@ -9,8 +9,11 @@ jobs:
   python-ci:
     uses: ./.github/workflows/python-ci.yml
 
+  BTD-ci:
+    uses: ./.github/workflows/BTD-ci.yml
+
   build-and-push:
-    needs: python-ci
+    needs: [python-ci, BTD-ci]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
     steps:
