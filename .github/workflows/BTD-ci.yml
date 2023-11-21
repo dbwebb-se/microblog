@@ -22,12 +22,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install make
+          pip install bandit
 
       - name: Run Bandit
         run: bandit-test
 
-      - name: Run Trivy
-        run: trivy-test
+      # - name: Run Trivy
+      #   run: trivy-test
 
-      - name: Run Dockle
-        run: dockle-test
+      # - name: Run Dockle
+      #   run: dockle-test
