@@ -65,6 +65,15 @@
       line: "PermitRootLogin no"
   notify: restart ssh
 
+- name: Replace sshd_config with Mozilla Modern Configuration
+  copy:
+    src: ../files/sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart ssh
+
 - name: flush handlers to restart SSH
   meta: flush_handlers # we cant do it later because after this we cant ssh as root
 
