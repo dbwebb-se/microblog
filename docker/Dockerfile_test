@@ -1,0 +1,23 @@
+# Use an appropriate base image, e.g., Python
+FROM python:3.10
+
+# Set the working directory
+WORKDIR /home/microblog
+
+# Copy the requirements file for test environment
+COPY requirements/test.txt ./requirements/
+COPY requirements/prod.txt ./requirements/
+COPY migrations migrations
+COPY .pylintrc .
+COPY pytest.ini .
+
+# Install the test requirements and create the script to run on startup
+RUN pip install --no-cache-dir -r requirements/test.txt \
+    && printf "#!/bin/sh\nmake test" > /start_script.sh \
+    && chmod +x /start_script.sh
+
+# Copy the Makefile as it's needed to run `make test`
+COPY Makefile .
+
+# Set the script to run on container startup
+ENTRYPOINT ["/start_script.sh"]
