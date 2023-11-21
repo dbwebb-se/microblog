@@ -1,8 +1,21 @@
----
+- name: Get the latest tag from GitHub API
+  uri:
+    url: "https://api.github.com/repos/falkendev/microblog/tags"
+    return_content: yes
+    headers:
+      User-Agent: "Ansible GitHub"
+  register: github_tags
+  delegate_to: localhost
+  become: no
+
+- name: Set latest tag as a variable
+  set_fact:
+    latest_tag: "{{ github_tags.json[0].name }}"
+
 - name: Start Microblog Container
   docker_container:
     name: microblog
-    image: falkendev/microblog:0.2.0-prod
+    image: "falkendev/microblog:{{ latest_tag }}-prod"
     env:
       DATABASE_URL: "mysql+pymysql://microblog:password@{{ groups['database'][0] }}:3306/microblog"
     ports:
