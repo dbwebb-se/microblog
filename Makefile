@@ -234,3 +234,10 @@ bandit-test:
 dockle-test:
 	docker build -f docker/Dockerfile_prod -t microblog:$(TAG) .
 	dockle --ignore DKL-LI-0003 -f json microblog:$(TAG)
+
+# target: trivy-test
+.PHONY: trivy-test
+trivy-test:
+	docker build -f docker/Dockerfile_prod -t microblog:$(TAG) .
+	trivy image microblog:$(TAG) --scanners vuln,secret,config
+	trivy fs scanners vuln,secret,config .
