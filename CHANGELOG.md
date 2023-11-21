@@ -13,12 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dockerfile_test to run the app in test mode
 - Added ChangeLog
 - Added git commit template and conventions
-- Badge for workflows
 
 
 ## [1.0.1] - 2023-11-20
+
+### Added
 - Add ci.yml to run tests in github actions
 - Add Follower functionality
 - Publish to DockerHub
 
+## [1.0.2] - 2023-11-21
+
+### Fixed
+- Corrected workflow file to render tag for docker image
+
+### Added
+- Added status badge for github actions
 

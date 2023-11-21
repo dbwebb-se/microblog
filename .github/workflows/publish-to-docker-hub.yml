@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
@@ -7,6 +9,7 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
+>>>>>>> d39b8077653159612a75a61c3cb590f9c8c81617
 name: Publish Docker image
 
 on:
@@ -42,5 +45,5 @@ jobs:
           context: .
           file: ./docker/Dockerfile_prod
           push: true
-          tags: ${{ github.event.release.tag_name }}-prod
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
