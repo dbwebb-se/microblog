@@ -216,3 +216,10 @@ install-test:
 install-deploy:
 	${pip} install -r requirements/deploy.txt
 	cd ansible && ansible-galaxy install -r requirements.yml
+
+
+
+# target: bandit-test					 - Run SAST tool bandit to find security holes in the code. Skipping hashlib (B324) as it's false positive.
+.PHONY: bandit-test
+bandit-test:
+	bandit  -s B324 app/*.py app/auth/*.py app/errors/*.py app/main/*.py
