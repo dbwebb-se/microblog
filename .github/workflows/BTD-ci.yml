@@ -23,12 +23,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install make
           pip install bandit
+          curl -sfL https://raw.githubusercontent.com/goodwithtech/dockle/master/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Run Bandit
-        run: bandit-test
+        run: make bandit-test
 
       # - name: Run Trivy
       #   run: trivy-test
 
-      # - name: Run Dockle
-      #   run: dockle-test
+      - name: Run Dockle
+        run: make dockle-test TAG=${{ github.event.release.tag_name }}-prod
