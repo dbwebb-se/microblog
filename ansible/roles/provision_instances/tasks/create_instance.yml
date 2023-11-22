@@ -50,11 +50,6 @@
   delegate_to: localhost
   when: iname == 'appserver1'
 
-- name: Set fact for appserver1 IP
-  set_fact:
-    appserver1_ip: "{{ output_ip_address.state.ip_address }}"
-  when: iname == 'appserver1'
-
 - name: Ensure "A" record for appserver2
   azure_rm_dnsrecordset:
     resource_group: "{{ resource_group }}"
@@ -65,11 +60,6 @@
     records:
       - entry: "{{ output_ip_address.state.ip_address }}"
   delegate_to: localhost
-  when: iname == 'appserver2'
-
-- name: Set fact for appserver2 IP
-  set_fact:
-    appserver2_ip: "{{ output_ip_address.state.ip_address }}"
   when: iname == 'appserver2'
 
 - name: Ensure "A" records for database

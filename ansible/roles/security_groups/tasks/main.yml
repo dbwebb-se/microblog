@@ -1,8 +1,4 @@
 ---
-- name: Debug groups
-  debug:
-    var: groups
-
 - name: Network Security Group
   azure_rm_securitygroup:
     resource_group: "{{ resource_group }}"
