@@ -9,6 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _No unreleased changes at this time._
 
+## [3.0.0] - 2023-11-26
+
+- **Fix:** Prettier update [PR 48](https://github.com/FalkenDev/microblog/pull/48)
+- **Fix:** Changed to use j2 for sshd_config [PR 48](https://github.com/FalkenDev/microblog/pull/48)
+- **Fix:** Prettrier [PR 48](https://github.com/FalkenDev/microblog/pull/48)
+- **Build:** Fixed the 10-firt-minutes [PR 48](https://github.com/FalkenDev/microblog/pull/48)
+
+## [2.1.0] - 2023-11-22
+
+- **Fix:** Added gather instances to run before security groups to get the ips [PR 47](https://github.com/FalkenDev/microblog/pull/47)
+- **Fix:** Fixed the appserver ip to source adress prefix [PR 47](https://github.com/FalkenDev/microblog/pull/47)
+- **Fix:** removed unused code [PR 47](https://github.com/FalkenDev/microblog/pull/47)
+- **Feat:** replaces sshd on the loadbalancer vm [PR 46](https://github.com/FalkenDev/microblog/pull/46)
+- **Feat:** new sshd config file follwing mozillas modern configuration [PR 46](https://github.com/FalkenDev/microblog/pull/46)
+- **Build:** Getting the latest tag from github to the docker image tag in appserver ansible [PR 45](https://github.com/FalkenDev/microblog/pull/45)
+- **Fix:** Cookie Without Secure Flag [10011] [PR 45](https://github.com/FalkenDev/microblog/pull/45)
+- **Fix:** Missing Anti-clickjacking Header [10020] [PR 45](https://github.com/FalkenDev/microblog/pull/45)
+- **Fix:** X-Content-Type-Options Header Missing [10021] [PR 45](https://github.com/FalkenDev/microblog/pull/45)
+- **Fix:** Strict-Transport-Security Header Not Set [10035] [PR 45](https://github.com/FalkenDev/microblog/pull/45)
+- **Fix:** add -- before scanners in trivy-test make command [PR 43](https://github.com/FalkenDev/microblog/pull/43)
+- **Fix:** Update werkzeug to 2.2.8 [PR 44](https://github.com/FalkenDev/microblog/pull/44)
+- **Fix:** changed crlf to lf on dockerfile_prod [PR 42](https://github.com/FalkenDev/microblog/pull/42)
+- **Fix:** Upgrade pip, setuptools, openssl to fix security issues [PR 41](https://github.com/FalkenDev/microblog/pull/41)
+- **Build:** New trivy-test make command to run docker build and trivy testing of image and repo. [PR 41](https://github.com/FalkenDev/microblog/pull/41)
+- **Test:** Added dockle-test in makefile [PR 40](https://github.com/FalkenDev/microblog/pull/40)
+- **CI:** Added dockle run [PR 40](https://github.com/FalkenDev/microblog/pull/40)
+- **CI:** Added docker_content_trust [PR 40](https://github.com/FalkenDev/microblog/pull/40)
+- **Build:** Added healthcheck for Dockerfile_prod [PR 40](https://github.com/FalkenDev/microblog/pull/40)
+- **Refactor:** Updated connection permissions [PR 39](https://github.com/FalkenDev/microblog/pull/39)
+- **Refactor:** Moved the creation of security groups [PR 39](https://github.com/FalkenDev/microblog/pull/39)
+- **Build:** Added a script in Makefile to run the bandit. Skipping hashlib (B324) as it's false positive. [PR 38](https://github.com/FalkenDev/microblog/pull/38)
+- **Build:** Added bandit to requirments in test requirments. [PR 38](https://github.com/FalkenDev/microblog/pull/38)
+- **CI:** Added CI Workflow for test BTD (Bandit, Trivy and Dockle) [PR 38](https://github.com/FalkenDev/microblog/pull/38)
+- **CI/CD:** Changed docker-publish CD workflow to run and pass the CI BTD (Bandit, Trivy and Dockle) before publish [PR 38](https://github.com/FalkenDev/microblog/pull/38)
+
 ## [2.0.0] - 2023-11-20
 
 - **Branch:** Push development branch to master branch to reflect kmom02 is done [PR 36](https://github.com/FalkenDev/microblog/pull/36)
