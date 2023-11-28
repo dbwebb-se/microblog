@@ -1,10 +1,11 @@
 ---
 - hosts:
-   - loadbalancer
+    - loadbalancer
   pre_tasks:
-   - raw: apt-get install -y python-simplejson
+    - raw: apt-get install -y python-simplejson
   remote_user: deploy
   become: yes
   become_method: sudo
   roles:
+    - docker-install
     - load_balancer
