@@ -14,8 +14,14 @@
 - name: Install certbot
   apt: name=python-certbot-nginx state=latest
 
+- name: Check if cert is already present
+  stat:
+    path: /etc/letsencrypt/live/{{ domain_name }}/cert.pem
+  register: cert_installed
+
 - name: Install cert
   shell: "certbot certonly --nginx --noninteractive --expand --agree-tos --email {{ admin_email }} -d {{ domain_name }} -d www.{{ domain_name }}"
+  when: not cert_installed.stat.exists
 
 - name: Remove default nginx config
   file: name=/etc/nginx/sites-enabled/default state=absent
@@ -40,3 +46,18 @@
   service:
     name: nginx
     state: restarted
+
+- name: Run the nginx-prometheus-exporter container
+  docker_container:
+    name: nginx-prometheus-exporter
+    image: nginx/nginx-prometheus-exporter:0.4.2
+    restart_policy: always
+    state: started
+    ports:
+      - "9113:9113"
+    env:
+      nginx_scrape_uri: "https://{{ domain_name }}/metrics"
+      nginx_retries: "10"
+      nginx_ssl_verify: "false"
+      web_telemetry_path: "/prometheus"
+    command: "--nginx.scrape-uri=https://{{ domain_name }}/metrics --nginx.retries=10 --nginx.ssl-verify=false --web.telemetry-path=/prometheus"
