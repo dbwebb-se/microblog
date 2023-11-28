@@ -1,0 +1,62 @@
+---
+- name: Install Docker-compose
+  apt:
+    name: docker-compose
+    state: latest
+    update_cache: yes
+
+- name: Remove image
+  docker_image:
+    name: prometheus
+    state: absent
+    force_absent: yes
+
+- name: Remove image
+  docker_image:
+    name: deploy_grafana_1
+    state: absent
+    force_absent: yes
+
+- name: Remove image
+  docker_image:
+    name: deploy_alertmanager_1
+    state: absent
+    force_absent: yes
+
+- name: copy docker-compose.yml to vm
+  ansible.builtin.copy:
+    src: ../files/docker-compose.yml
+    dest: /home/deploy/docker-compose.yml
+
+- name: copy Prometheus config to vm
+  ansible.builtin.copy:
+    src: ../files/prometheus.yml
+    dest: /home/deploy/prometheus.yml
+
+- name: copy Prometheus rules to vm
+  ansible.builtin.copy:
+    src: ../files/rules.yml
+    dest: /home/deploy/rules.yml
+
+- name: copy Alertmanager config to vm
+  ansible.builtin.copy:
+    src: ../files/alertmanager.yml
+    dest: /home/deploy/alertmanager.yml
+
+- name: Start Prometheus, Grafana and Alertmanager
+  ansible.builtin.command:
+    cmd: docker-compose up -d
+    chdir: /home/deploy
+  become: yes
+
+- name: Add Prometheus as datasource in Grafana
+  community.grafana.grafana_datasource:
+    ds_type: prometheus
+    ds_url: http://0.0.0.0:9090
+    name: Prometheus
+    grafana_url: http://0.0.0.0:3000
+    access: proxy
+    is_default: true
+    grafana_user: admin
+    grafana_password: admin
+    state: present
