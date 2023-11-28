@@ -62,3 +62,19 @@ sg_groups:
         priority: 1003
         direction: Inbound
         source_address_prefix: "{{ groups['appserver'][3] }}/32"
+  - name: monitoring
+    port_rules:
+      - name: APP
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
+        source_address_prefix: "0.0.0.0/0"
+      - name: HTTP
+        protocol: Tcp
+        destination_port_range: 8000
+        access: Allow
+        priority: 1002
+        direction: Inbound
+        source_address_prefix: "0.0.0.0/0"
