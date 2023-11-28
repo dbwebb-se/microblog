@@ -19,4 +19,6 @@ EOF
 
 ENV PATH="/home/microblog/.venv/bin:$PATH"
 
+ENV PROMETHEUS_MULTIPROC_DIR /tmp
+
 ENTRYPOINT ["./run_tests.sh"]
