@@ -13,10 +13,11 @@ COPY app app
 COPY migrations migrations
 COPY requirements requirements
 COPY requirements.txt microblog.py boot.sh ./
+COPY gunicorn_config.py gunicorn_config.py
 # Update the package manager and install necessary dependencies
 RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache gcc musl-dev linux-headers
+  apk upgrade && \
+  apk add --no-cache gcc musl-dev linux-headers
 
 RUN pip install --upgrade pip setuptools
 
@@ -35,6 +36,8 @@ HEALTHCHECK --interval=60s --timeout=20s --start-period=5s --retries=3 \
 ENV FLASK_APP microblog.py
 
 USER microblog
+
+ENV PROMETHEUS_MULTIPROC_DIR /tmp
 
 EXPOSE 8000
 ENTRYPOINT ["./boot.sh"]
