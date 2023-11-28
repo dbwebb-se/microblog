@@ -5,43 +5,54 @@
     state: latest
     update_cache: yes
 
-- name: Remove image
+- name: Remove image prometheus
   docker_image:
     name: prometheus
     state: absent
     force_absent: yes
 
-- name: Remove image
+- name: Remove image deploy_grafana_1
   docker_image:
     name: deploy_grafana_1
     state: absent
     force_absent: yes
 
-- name: Remove image
+- name: Remove image deploy_alertmanager_1
   docker_image:
     name: deploy_alertmanager_1
     state: absent
     force_absent: yes
 
+- name: Remove image node-exporter
+  docker_image:
+    name: node-exporter
+    state: absent
+    force_absent: yes
+
 - name: copy docker-compose.yml to vm
-  ansible.builtin.copy:
-    src: ../files/docker-compose.yml
+  ansible.builtin.template:
+    src: files/docker-compose.yml
     dest: /home/deploy/docker-compose.yml
 
 - name: copy Prometheus config to vm
-  ansible.builtin.copy:
-    src: ../files/prometheus.yml
+  ansible.builtin.template:
+    src: files/prometheus.yml
     dest: /home/deploy/prometheus.yml
 
 - name: copy Prometheus rules to vm
-  ansible.builtin.copy:
-    src: ../files/rules.yml
+  ansible.builtin.template:
+    src: files/rules.yml
     dest: /home/deploy/rules.yml
 
 - name: copy Alertmanager config to vm
-  ansible.builtin.copy:
-    src: ../files/alertmanager.yml
+  ansible.builtin.template:
+    src: files/alertmanager.yml
     dest: /home/deploy/alertmanager.yml
+
+- name: copy grafana initals to vm
+  ansible.builtin.template:
+    src: files/grafana.ini
+    dest: /home/deploy/grafana.ini
 
 - name: Start Prometheus, Grafana and Alertmanager
   ansible.builtin.command:
@@ -49,14 +60,9 @@
     chdir: /home/deploy
   become: yes
 
-- name: Add Prometheus as datasource in Grafana
+- name: Prometheus as data source
   community.grafana.grafana_datasource:
+    name: prometheus
+    url: http://0.0.0.0:3000
     ds_type: prometheus
-    ds_url: http://0.0.0.0:9090
-    name: Prometheus
-    grafana_url: http://0.0.0.0:3000
-    access: proxy
-    is_default: true
-    grafana_user: admin
-    grafana_password: admin
-    state: present
+    ds_url: http://prometheus:9090
