@@ -9,6 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _No unreleased changes at this time._
 
+## [3.1.1] - 2023-11-29
+
+- **Fix:** Using internal instead of without [PR 58](https://github.com/FalkenDev/microblog/pull/58)
+- **Fix:** Using internal instead of without [PR 58](https://github.com/FalkenDev/microblog/pull/58)
+- **Fix:** Removed alredy existing pip installs [PR 58](https://github.com/FalkenDev/microblog/pull/58)
+
+## [3.1.0] - 2023-11-28
+
+- **Fix:** Fixing pytest unit [PR 57](https://github.com/FalkenDev/microblog/pull/57)
+- **Fix:** Adding the PROMETHEUS_MULTIPROC_DIR to the test dockerfile [PR 56](https://github.com/FalkenDev/microblog/pull/56)
+- **Fix:** Added port for exporter in load balancer [PR 55](https://github.com/FalkenDev/microblog/pull/55)
+- **Fix:** added GunicornPrometheusMetrics to app [PR 54](https://github.com/FalkenDev/microblog/pull/54)
+- **Build:** Added monitoring to the build [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Docker-compose file to run the Prometheus, Grafana and Alert [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Config:** Added alertmanager condig [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Added prometheus condig for exporter [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Added prometheus rules [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Added monitoring as a new vm [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Added monitoring to the security groups [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Chore:** Reverse proxy for grafana [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Fix:** Removed unused citation " [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Added Grfana initials [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Changed to use the vms ips [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Bugging [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Build:** Fixed security ports [PR 53](https://github.com/FalkenDev/microblog/pull/53)
+- **Feat:** Created Gunicorn config in dockerfile_prod [PR 52](https://github.com/FalkenDev/microblog/pull/52)
+- **Feat:** Configuration file for gunicorn setup [PR 52](https://github.com/FalkenDev/microblog/pull/52)
+- **Feat:** Added pip requirement for prometheus [PR 52](https://github.com/FalkenDev/microblog/pull/52)
+- **Feat:** Updated boot.sh to include gunicorn config [PR 52](https://github.com/FalkenDev/microblog/pull/52)
+- **Build:** Add docker-install role to loadbalancer [PR 51](https://github.com/FalkenDev/microblog/pull/51)
+- **Build:** Check cert before create, start prometheus exporter [PR 51](https://github.com/FalkenDev/microblog/pull/51)
+- **Chore:** Enable nginx metrics [PR 51](https://github.com/FalkenDev/microblog/pull/51)
+
 ## [3.0.0] - 2023-11-26
 
 - **Fix:** Prettier update [PR 48](https://github.com/FalkenDev/microblog/pull/48)
