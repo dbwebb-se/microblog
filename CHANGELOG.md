@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _No unreleased changes at this time._
 
+## [4.0.0] - 2023-11-30
+
+- **Feat:** Added new alarms - High cpu usage and High memory [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Feat:** Added flash dashboard, node and nginx [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Feat:** Added port 9100 to mysql exporter [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Feat:** Added job mysql-node (node exporter) [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Fix:** Update timer rules [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Feat:** Added dashboards to grafana [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Fix:** Small fixes, using now the local json files of dashboards instead [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Refactor:** Changed the timer to be on 10s [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Refactor:** typo change [PR 60](https://github.com/FalkenDev/microblog/pull/60)
+- **Build:** Add node exporter to database vm [PR 59](https://github.com/FalkenDev/microblog/pull/59)
+
 ## [3.1.1] - 2023-11-29
 
 - **Fix:** Using internal instead of without [PR 58](https://github.com/FalkenDev/microblog/pull/58)
