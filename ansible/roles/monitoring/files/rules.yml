@@ -8,8 +8,8 @@ groups:
   - name: High cpu usage
     rules:
       - alert: HighCpuUsage
-        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 80
-        for: 1m
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[10s])) * 100) > 80
+        for: 10s
         labels:
           severity: critical
         annotations:
@@ -20,7 +20,7 @@ groups:
     rules:
       - alert: HighMemoryUsage
         expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 80
-        for: 1m
+        for: 10s
         labels:
           severity: critical
         annotations:
