@@ -13,3 +13,20 @@
     restart_policy: always
     published_ports:
       - "3306:3306"
+
+- name: Start Node Exporter
+  docker_container:
+    image: prom/node-exporter:v1.2.2
+    name: node_exporter
+    published_ports:
+      - "9100:9100"
+    restart_policy: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.rootfs=/rootfs"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
