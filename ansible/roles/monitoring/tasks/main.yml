@@ -66,3 +66,26 @@
     url: http://0.0.0.0:3000
     ds_type: prometheus
     ds_url: http://prometheus:9090
+
+- name: Flask Dashboard Grafana
+  community.grafana.grafana_dashboard:
+    grafana_url: http://0.0.0.0:3000
+    grafana_user: "admin"
+    grafana_password: "admin"
+    path: https://gist.githubusercontent.com/AndreasArne/433f902f9b986c301f2b2877454a581f/raw/4898bb2013b469cf74ace82d2d5aa39e073cb069/flaskdash.json
+
+- name: Node exporter Dashboard Grafana
+  community.grafana.grafana_dashboard:
+    grafana_url: http://0.0.0.0:3000
+    grafana_user: "admin"
+    grafana_password: "admin"
+    dashboard_id: 1860
+    dashboard_revision: 33
+
+- name: Nginx Dashboard Grafana
+  community.grafana.grafana_dashboard:
+    grafana_url: http://0.0.0.0:3000
+    grafana_user: "admin"
+    grafana_password: "admin"
+    dashboard_id: 14900
+    dashboard_revision: 2
