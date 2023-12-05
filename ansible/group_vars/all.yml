@@ -3,19 +3,19 @@
 ansible_python_interpreter: "python3"
 
 region: northeurope
-resource_group: DIDA-KAFA21-DV1673-H23-LP2
-domain_name: devopsbth.tech
+resource_group: "{{ lookup('env', 'RESOURCE_GROUP') }}"
+domain_name: "{{ lookup('env', 'DOMAIN_NAME') }}"
 
-admin_email: kafa21@student.bth.se
+admin_email: "{{ lookup('env', 'ADMIN_EMAIL') }}"
 
 vmtags:
-  StudentId: kafa21
+  StudentId: "{{ lookup('env', 'STUDENTID') }}"
 
-pub_ssh_key_location: "/home/falkendev/.ssh/azure.pub"
+pub_ssh_key_location: "{{ lookup('env', 'PUB_SSH_KEY_LOCATION') }}"
 
 lb_method: least_conn
 
-server_user: "deploy"
-server_user_pass: "devopsbth"
+server_user: "{{ lookup('env', 'SERVER_USER') }}"
+server_user_pass: "{{ lookup('env', 'SERVER_USER_PASS') }}"
 server_user_groups:
   - sudo
