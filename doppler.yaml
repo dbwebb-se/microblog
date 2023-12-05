@@ -1,0 +1,3 @@
+setup:
+  - project: microblog
+    config: dev_personal

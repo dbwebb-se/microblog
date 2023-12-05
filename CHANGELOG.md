@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _No unreleased changes at this time._
 
+## [5.0.0] - 2023-12-05
+
+- **Branch:** Push development branch to master branch to reflect kmom05 is done [PR 67](https://github.com/FalkenDev/microblog/pull/67)
+- **Docs:** Changelog updated to reflect the new release (Kmom05) [PR 66](https://github.com/FalkenDev/microblog/pull/66)
+- **Docs:** Doppler technical analysis/study [PR 66](https://github.com/FalkenDev/microblog/pull/66)
+- **Feat:** Added doppler.yaml for easy configuration on Doppler [PR 66](https://github.com/FalkenDev/microblog/pull/66)
+
+## [4.1.0] - 2023-12-05
+
+- **CD:** Add doppler to deploy workflow [PR 65](https://github.com/FalkenDev/microblog/pull/65)
+- **Chore:** Replace vars with doppler secrets [PR 65](https://github.com/FalkenDev/microblog/pull/65)
+- **Chore:** Replace config vars with doppler secrets [PR 65](https://github.com/FalkenDev/microblog/pull/65)
+- **Chore:** Get .pub ssh keys from doppler instead of files [PR 65](https://github.com/FalkenDev/microblog/pull/65)
+- **Fix**: Added task to update requests_toolbelt & urllib3 [PR 64](https://github.com/FalkenDev/microblog/pull/64)
+
 ## [4.0.0] - 2023-11-30
 
 - **Feat:** Added new alarms - High cpu usage and High memory [PR 60](https://github.com/FalkenDev/microblog/pull/60)
