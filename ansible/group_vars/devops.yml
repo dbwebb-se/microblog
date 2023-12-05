@@ -1,2 +1,2 @@
-root_user: azureuser
-root_password: "devopsbth" # change me
+root_user: "{{ lookup('env', 'ROOT_USER') }}"
+root_password: "{{ lookup('env', 'ROOT_PASSWORD') }}" # change me

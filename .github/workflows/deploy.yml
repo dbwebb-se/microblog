@@ -26,6 +26,9 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.azure_ssh }}
+      
+      - name: Install doppler
+        uses: dopplerhq/cli-action@v2
 
       - name: Install Ansible
         run: |
@@ -33,6 +36,7 @@ jobs:
           pip install ansible
 
       - name: Run Rolling Update Playbook
-        run: ansible-playbook -i ansible/hosts ansible/deploy.yml -e "github_release_tag=${{ github.event.release.tag_name }}"
+        run: doppler run -- ansible-playbook -i ansible/hosts ansible/deploy.yml -e "github_release_tag=${{ github.event.release.tag_name }}"
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_PROD }}
