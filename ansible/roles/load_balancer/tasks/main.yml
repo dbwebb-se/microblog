@@ -11,6 +11,13 @@
 - name: Ensure Pip is installed
   raw: test -e /usr/bin/pip || (apt-get update -y && apt-get install -y python-pip)
 
+- name: Update requests_toolbelt and urllib3 packages
+  pip:
+    name:
+      - requests_toolbelt
+      - urllib3
+    state: latest
+
 - name: Install certbot
   apt: name=python-certbot-nginx state=latest
 
