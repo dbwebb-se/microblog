@@ -6,6 +6,6 @@ packages:
   - unattended-upgrades
 
 users_users:
-  - key: azure_james.pub
-  - key: azure_joel.pub
-  - key: azure_kasper.pub
+  - key: "{{ lookup('env', 'AZURE_KASPER') }}"
+  - key: "{{ lookup('env', 'AZURE_JOEL') }}"
+  - key: "{{ lookup('env', 'AZURE_JAMES') }}"

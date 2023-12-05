@@ -39,7 +39,7 @@
 - name: Set ssh keys for regular users from files
   authorized_key:
     user: "{{ server_user }}"
-    key: "{{ lookup('file', item.key) }}"
+    key: "{{ item.key }}"
     exclusive: no
   with_items: "{{ users_users }}"
 
