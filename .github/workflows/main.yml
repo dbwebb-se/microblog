@@ -1,0 +1,14 @@
+name: Main workflow on new release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-to-docker-hub:
+    uses: ./.github/workflows/publish-to-docker-hub.yml
+    secrets: inherit
+  continuous-delivery:
+    uses: ./.github/workflows/deploy-to-appservers.yml
+    needs: [publish-to-docker-hub]
+    secrets: inherit

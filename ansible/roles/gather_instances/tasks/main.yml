@@ -5,12 +5,9 @@
     delegate_to: localhost
     register: az_facts
 
-
-
 -   name: Display all variables/facts known for a host
     debug:
         var: az_facts
-
 
 
 -   name: add instance to hosts
@@ -25,7 +22,6 @@
         itype: "{{ item.tags.Type }}"
     with_items: "{{ az_facts.vms }}"
     when: item.tags.PublicIP is defined and item.power_state == "running"
-
 
 
 -   name: Display all variables/facts known for a host

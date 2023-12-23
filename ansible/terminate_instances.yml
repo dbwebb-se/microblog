@@ -8,8 +8,6 @@
     roles:
         - gather_instances
 
-
-
 -   name: remove instance
     hosts: devops
     connection: local
@@ -19,8 +17,6 @@
     roles:
         - terminate_instances
 
-
-
 -   name: remove networks
     hosts: local
     gather_facts: False
@@ -28,8 +24,6 @@
         -   include_tasks: roles/terminate_instances/tasks/vnet.yml
     collections:
         - azure.azcollection
-
-
 
 -   name: remove security groups
     hosts: local

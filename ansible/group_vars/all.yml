@@ -1,21 +1,27 @@
 ---
 # Here you can add variables that will be available for all hosts.
-ansible_python_interpreter: "python3"
+ansible_python_interpreter: "python"
 
 region: northeurope
-resource_group: <your resource group> # Change me
-domain_name: <your domain> # Change me
+resource_group: DIDA-BEHA20-DV1673-H23-LP2 # Change me
+domain_name: studbeh.tech # Change me
 
-admin_email: <an email>
+admin_email: beha20@student.bth.se 
 
 vmtags:
-    StudentId: <acronym> # Change me
+    StudentId: beha20 # Change me
 
 
-pub_ssh_key_location: '<path to you local ssh public key>' # Change me, your local ssh key!
+pub_ssh_key_location: '/Users/shark/.ssh/id_rsa.pub' # Change me, your local ssh key!
 
 
 server_user: "deploy"
-server_user_pass: "<a password>" # change me
+server_user_pass: "Apple@123" # change me
 server_user_groups:
     -   sudo
+
+db_username: "microblog"
+db_password: "microblog@123"
+db_name: "microblog"
+
+app_version: "v1.0.2"
