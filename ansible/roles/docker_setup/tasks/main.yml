@@ -1,0 +1,44 @@
+---
+- name: Ensure Ansible uses Python 3
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Install prerequisite packages
+  apt:
+    name: "{{ prereq }}"
+    update_cache: yes
+    state: present
+
+- name: Add Docker's official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker repository to Apt sources
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release | lower }} stable"
+    state: present
+
+- name: Update Apt repositories
+  apt:
+    update_cache: yes
+
+- name: Install Docker and related packages
+  apt:
+    name: "{{ docker }}"
+    state: present
+
+- name: Install required Python packages (setuptools, docker, requests)
+  pip:
+    name:
+      - setuptools
+      - docker
+      - requests
+    executable: pip3
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  ignore_errors: yes

@@ -1,0 +1,19 @@
+---
+- name: Ensure Ansible uses Python 3
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python3
+- name: Install Docker
+  include_role:
+    name: docker_setup
+  tags: init
+- name: Create appservice container
+  community.docker.docker_container:
+    name: "microblog"
+    image: "beha20/microblog:{{ app_version }}"
+    restart_policy: "always"
+    published_ports:
+      - "8000:5000"
+    env: 
+      SECRET_KEY: "my-secret-key"
+      DATABASE_URL: "{{ db_url }}"
+      APP_VERSION: "{{ app_version }}"

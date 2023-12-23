@@ -1,0 +1,39 @@
+# Gather facts from remote instance and set as hosts
+---
+-   hosts: local
+    connection: local
+    gather_facts: False
+    collections:
+        - azure.azcollection
+    roles:
+        - gather_instances
+# -   hosts: database
+#     remote_user: "{{ server_user }}"
+#     become: yes
+#     become_method: sudo
+#     roles:
+#         -   database
+-   hosts: appserver1
+    remote_user: "{{ server_user }}"
+    become: yes
+    become_method: sudo
+    roles:
+      - role: appserver
+        app_version: "v1.0.2"
+        db_url: "{{ 'mysql+pymysql://' + db_username + ':' + db_password + '@' + groups.database[0] + ':' + '3306/' + db_name }}"
+        
+-   hosts: appserver2
+    remote_user: "{{ server_user }}"
+    become: yes
+    become_method: sudo
+    roles:
+      - role: appserver
+        app_version: "v1.0.2"
+        db_url: "{{ 'mysql+pymysql://' + db_username + ':' + db_password + '@' + groups.database[0] + ':' + '3306/' + db_name }}"
+
+-   hosts: loadbalancer
+    remote_user: "{{ server_user }}"
+    become: yes
+    become_method: sudo
+    roles:
+        -   loadbalancer

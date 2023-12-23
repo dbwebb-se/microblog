@@ -4,3 +4,8 @@ packages:
     -   tmux
     -   git
     -   unattended-upgrades
+
+
+users_users:
+  - key: "{{ lookup('file', 'beha20.pub') }}"
+ 

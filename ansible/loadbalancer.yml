@@ -6,9 +6,9 @@
         - azure.azcollection
     roles:
         - gather_instances
--   hosts: devops
+-   hosts: loadbalancer
+    remote_user: "{{ server_user }}"
     become: yes
     become_method: sudo
-    remote_user: azureuser
     roles:
-      - role: 10-first-minutes
+        -   loadbalancer
