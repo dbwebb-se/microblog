@@ -5,4 +5,4 @@
 # -   import_playbook: 10-first-minutes.yml
 -   import_playbook: microblog.yml
     vars:
-      app_version: "v1.0.2"
+      app_version: "{{ app_version }}"
