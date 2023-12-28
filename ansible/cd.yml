@@ -25,7 +25,7 @@
         name: microblog
         image: "{{ dockerhub_username }}/microblog:{{ github_release_tag }}"
         env:
-          db_url: "{{ 'mysql+pymysql://' + db_username + ':' + db_password + '@' + groups.database[0] + ':' + '3306/' + db_name }}"
+          DATABASE_URL: "{{ 'mysql+pymysql://' + db_username + ':' + db_password + '@' + groups.database[0] + ':' + '3306/' + db_name }}"
         ports:
           - "8000:5000"  # Ensure this maps the internal port to the correct external port
         restart_policy: always
