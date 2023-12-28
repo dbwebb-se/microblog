@@ -7,12 +7,12 @@
         - azure.azcollection
     roles:
         - gather_instances
-# -   hosts: database
-#     remote_user: "{{ server_user }}"
-#     become: yes
-#     become_method: sudo
-#     roles:
-#         -   database
+-   hosts: database
+    remote_user: "{{ server_user }}"
+    become: yes
+    become_method: sudo
+    roles:
+        -   database
 -   hosts: appserver1
     remote_user: "{{ server_user }}"
     become: yes
