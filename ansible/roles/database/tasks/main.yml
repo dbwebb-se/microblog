@@ -11,7 +11,7 @@
     env: 
       MYSQL_DATABASE: "microblog"
       MYSQL_USER: "microblog"
-      MYSQL_PASSWORD: "microblog@123"
+      MYSQL_PASSWORD: "microblog123"
       MYSQL_ONETIME_PASSWORD: "false"
       MYSQL_RANDOM_ROOT_PASSWORD: "no"
     # volumes:

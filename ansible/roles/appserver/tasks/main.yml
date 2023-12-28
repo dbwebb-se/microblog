@@ -15,5 +15,5 @@
       - "8000:5000"
     env: 
       SECRET_KEY: "my-secret-key"
-      DATABASE_URL: "{{ db_url }}"
+      DATABASE_URL: "{{ DATABASE_URL }}"
       APP_VERSION: "{{ app_version }}"

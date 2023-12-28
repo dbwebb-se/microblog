@@ -16,12 +16,12 @@ pub_ssh_key_location: '/Users/shark/.ssh/id_rsa.pub' # Change me, your local ssh
 
 
 server_user: "deploy"
-server_user_pass: "Apple@123" # change me
+server_user_pass: "Apple123" # change me
 server_user_groups:
     -   sudo
 
 db_username: "microblog"
-db_password: "microblog@123"
+db_password: "microblog123"
 db_name: "microblog"
 
-app_version: "v1.0.2"
+app_version: "v1.0.6"
