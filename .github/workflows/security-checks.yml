@@ -1,5 +1,3 @@
-security-checks.yml:
-
 name: Security Checks Workflow
 
 on:
