@@ -1,3 +1,5 @@
 -r requirements/prod.txt
 gunicorn >= 19.9.0
 pymysql >= 0.9.3
+setuptools>=65.5.1
+pip>=23.3

@@ -12,9 +12,11 @@ COPY migrations migrations
 COPY requirements requirements 
 COPY requirements.txt microblog.py docker/boot.sh ./
 
+RUN pip install --upgrade pip setuptools
+
 # Combine Python environment setup and dependencies installation
 RUN python -m venv .venv && \
-    .venv/bin/pip3 install -r requirements.txt
+    .venv/bin/pip3 install --no-cache-dir -r requirements.txt
 
 ENV FLASK_APP microblog.py
 
