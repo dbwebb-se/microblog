@@ -3,9 +3,10 @@ security-checks.yml:
 name: Security Checks Workflow
 
 on:
+  push:
+    branches: [ "dev/beha20/kmom03" ]
   workflow_call:
-  release:
-    types: [created]
+    
 
 jobs:
   security_checks:
