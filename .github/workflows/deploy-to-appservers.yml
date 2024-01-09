@@ -1,6 +1,8 @@
 name: Rolling Update Deployment
 
 on:
+  push:
+    branches: [ "dev/beha20/kmom03" ]
   workflow_call:
     
 jobs:
@@ -28,6 +30,6 @@ jobs:
           pip install ansible
 
       - name: Run Rolling Update Playbook
-        run: ansible-playbook -i ansible/hosts ansible/cd.yml -e "github_release_tag=${{ github.event.release.tag_name }}"
+        run: ansible-playbook -i ansible/hosts ansible/cd.yml -e "github_release_tag=${{ github.run_id }}"
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
