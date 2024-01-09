@@ -1,10 +1,7 @@
 name: Security Checks Workflow
 
 on:
-  workflow_call:
-  release:
-    types: [created]
-    
+  workflow_call:    
 
 jobs:
   security_checks:
