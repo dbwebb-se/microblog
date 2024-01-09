@@ -37,11 +37,17 @@ jobs:
           sudo dpkg -i dockle.deb
           rm dockle.deb
 
+      - name: Set Random Tag Name
+        id: set_random_tag
+        run: echo "::set-output name=RANDOM_TAG::$(uuidgen)"
+
+      - name: Run Trivy
+        run: make trivy-test TAG=${{ steps.set_random_tag.outputs.RANDOM_TAG }}-prod
+
       - name: Run Bandit
         run: make bandit-test
 
-      - name: Run Trivy
-        run: make trivy-test TAG=${{ github.event.release.tag_name }}-prod
-
-      - name: Run Dockle
-        run: make dockle-test TAG=${{ github.event.release.tag_name }}-prod
+      - name: Run Trivy and Dockle
+        run: |
+          make trivy-test TAG=${{ steps.set_random_tag.outputs.RANDOM_TAG }}-prod
+          make dockle-test TAG=${{ steps.set_random_tag.outputs.RANDOM_TAG }}-prod
