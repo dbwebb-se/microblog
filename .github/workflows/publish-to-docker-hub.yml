@@ -1,28 +1,19 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# GitHub recommends pinning actions to a commit SHA.
-# To get a newer version, you will need to update the SHA.
-# You can also reference a tag or branch, but the action may change without warning.
-
 name: Publish Docker image
 
 on:
   workflow_call:
 
 jobs:
-  buid_and_test:
+  build_and_test:
     uses: ./.github/workflows/ci.yml
 
   security-checks:
     uses: ./.github/workflows/security-checks.yml
-  
+
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    needs: [buid_and_test, security-checks]
+    needs: [build_and_test, security-checks]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -41,6 +32,8 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        env:
+          DOCKER_CONTENT_TRUST: 1
         with:
           context: .
           file: ./docker/Dockerfile_prod
@@ -51,6 +44,8 @@ jobs:
 
       - name: Build and push Docker image for testing
         uses: docker/build-push-action@v5
+        env:
+          DOCKER_CONTENT_TRUST: 1
         with:
           context: .
           file: ./docker/Dockerfile_prod
