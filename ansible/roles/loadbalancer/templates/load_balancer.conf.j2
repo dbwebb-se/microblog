@@ -1,16 +1,13 @@
-http {
+    http {
     upstream app-hosts {
         {{ lb_method }};
         {% for server in groups['appserver'] %}
-            server {{ server }}:8000;
+        server {{ server }}:8000;
         {% endfor %}
     }
 
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
-
-    # WARN-NEW: Server Leaks Version Information via "Server" HTTP Response Header Field
-    server_tokens off;
 
     # This server accepts all traffic to port 80 and passes it to the upstream. 
     # Notice that the upstream name and the proxy_pass need to match.
