@@ -46,6 +46,7 @@
     hosts: local
     gather_facts: False
     roles: 
+        - gather_instances
         - security_groups
 
 -   name: Set networks security groups
