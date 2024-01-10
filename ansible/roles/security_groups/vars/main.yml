@@ -45,7 +45,7 @@ sg_groups:
         access: Allow
         priority: 1002
         direction: Inbound
-        source_address_prefix: "0.0.0.0/0"
+        source_address_prefix: "{{ groups['loadbalancer'][0] | default('0.0.0.0/0') }}/32"
   - name: database
     port_rules:
       - name: SSH
@@ -55,24 +55,19 @@ sg_groups:
         priority: 1001
         direction: Inbound
         source_address_prefix: "0.0.0.0/0"
-      - name: MYSQL-appserver1
+      - name: MYSQL
         protocol: Tcp
         destination_port_range: 3306
         access: Allow
         priority: 1002
         direction: Inbound
-        source_address_prefix: "{{ groups['appserver'][2] }}/32"
-      - name: MYSQL-appserver2
-        protocol: Tcp
-        destination_port_range: 3306
-        access: Allow
-        priority: 1003
-        direction: Inbound
-        source_address_prefix: "{{ groups['appserver'][3] }}/32"
+        source_address_prefix: 
+          - "{{ groups['appserver1'][0]  | default('0.0.0.0/0') }}/32"
+          - "{{ groups['appserver2'][0]  | default('0.0.0.0/0') }}/32"
       - name: EXPORTER-DB
         protocol: Tcp
         destination_port_range: 9100
         access: Allow
-        priority: 1004
+        priority: 1003
         direction: Inbound
         source_address_prefix: "0.0.0.0/0"
