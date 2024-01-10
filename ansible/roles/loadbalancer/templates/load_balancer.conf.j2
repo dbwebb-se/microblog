@@ -30,12 +30,8 @@
        ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-       # WARN-NEW: Cookie Without HTTPOnly
-       # WARN-NEW: Cookie without SameSite Attribute [10054] x 11 
        proxy_cookie_path / "/; HTTPOnly;   Secure";
-
-       # WARN-NEW: X-Content-Type-Options Header Missing [10021] x 6 
-        add_header X-Content-Type-Options nosniff always;
+       add_header X-Content-Type-Options "nosniff" always;
 
         # WARN-NEW: Missing Anti-clickjacking Header [10020] x 6 
         add_header X-Frame-Options SAMEORIGIN always;
