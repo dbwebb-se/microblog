@@ -1,14 +1,17 @@
 ---
--   hosts: local
-    connection: local
-    gather_facts: False
-    collections:
-        - azure.azcollection
-    roles:
-        - gather_instances
+# -   hosts: local
+#     connection: local
+#     gather_facts: False
+#     collections:
+#         - azure.azcollection
+#     roles:
+#         - gather_instances
 -   hosts: devops
     become: yes
     become_method: sudo
+    gather_facts: False
     remote_user: azureuser
     roles:
       - role: 10-first-minutes
+        vars:
+            old_user: azureuser
