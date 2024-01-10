@@ -1,10 +1,13 @@
-FROM python:3.10-alpine
-RUN adduser -D microblog
+# syntax=docker/dockerfile:1.4
 
-WORKDIR /home/microblog
+FROM python:3.8-alpine
 
 ARG APP_VERSION=unknown
 ENV APP_VERSION=${APP_VERSION}
+
+RUN adduser -D microblog
+
+WORKDIR /home/microblog
 
 # COPY . . 
 COPY app app 
@@ -12,20 +15,28 @@ COPY migrations migrations
 COPY requirements requirements 
 COPY requirements.txt microblog.py docker/boot.sh ./
 
+# Update the package manager and install necessary dependencies
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache gcc musl-dev linux-headers
+
 RUN pip install --upgrade pip setuptools
 
-# Combine Python environment setup and dependencies installation
-RUN python -m venv .venv && \
-    .venv/bin/pip3 install --no-cache-dir -r requirements.txt
+
+# Combine Python environment setup and dependencies installation with chmod and chown commands
+RUN <<-EOF
+    apk add --no-cache make && \
+    apk upgrade --no-cache && \
+    python -m venv .venv && \
+    .venv/bin/pip3 install --no-cache-dir -r requirements.txt && \
+    chmod +x boot.sh && \
+    chown -R microblog:microblog ./
+EOF
 
 HEALTHCHECK --interval=60s --timeout=20s --start-period=5s --retries=3 \
   CMD curl --fail http://localhost:5000/ || exit 1
 
 ENV FLASK_APP microblog.py
-
-# Combine chmod and chown commands
-RUN chmod +x boot.sh && \
-    chown -R microblog:microblog ./
 
 USER microblog
 
