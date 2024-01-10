@@ -17,10 +17,9 @@
        server_name  {{ domain_name }} www.{{ domain_name }};
        return 301 https://$server_name$request_uri;
     
-       location / {
-          proxy_pass http://app-hosts;
-
-        }
+        #location / {
+        #   proxy_pass http://app-hosts;
+        #}
     }
     server {
        listen 443 ssl;
@@ -31,10 +30,9 @@
        ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-       # WARN-NEW: Cookie Without Secure Flag [10011] x 11  
        # WARN-NEW: Cookie Without HTTPOnly
        # WARN-NEW: Cookie without SameSite Attribute [10054] x 11 
-       proxy_cookie_path / "/; HTTPOnly;   Secure; SameSite=Strict";
+       proxy_cookie_path / "/; HTTPOnly;   Secure";
 
        # WARN-NEW: X-Content-Type-Options Header Missing [10021] x 6 
         add_header X-Content-Type-Options nosniff always;
