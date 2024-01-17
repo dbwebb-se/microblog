@@ -38,7 +38,7 @@
 
     - name: Verify the deployment
       uri:
-        url: "http://{{ inventory_hostname }}:8000/"
+        url: "http://localhost:8000/"
         return_content: yes
         status_code: 302
       register: result
