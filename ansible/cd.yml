@@ -40,5 +40,5 @@
       uri:
         url: "http://localhost:8000/"
         return_content: yes
-        status_code: 302
+        status_code: 200
       register: result
