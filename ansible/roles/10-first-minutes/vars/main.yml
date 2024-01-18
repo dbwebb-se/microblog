@@ -1,6 +1,11 @@
 ---
 packages:
-    -   fail2ban
-    -   tmux
-    -   git
-    -   unattended-upgrades
+  - fail2ban
+  - tmux
+  - git
+  - unattended-upgrades
+
+users_users:
+  - key: "{{ lookup('env', 'AZURE_KASPER') }}"
+  - key: "{{ lookup('env', 'AZURE_JOEL') }}"
+  - key: "{{ lookup('env', 'AZURE_JAMES') }}"

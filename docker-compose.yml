@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: microblog
+      MYSQL_USER: microblog
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+
+  prod:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_prod
+    environment:
+      FLASK_APP: microblog.py
+      DATABASE_URL: mysql+pymysql://microblog:password@db/microblog
+    ports:
+      - "8000:5000"
+    depends_on:
+      - db
+    restart: always
+
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_test
+    volumes:
+      - ./app:/home/microblog/app
+      - ./tests:/home/microblog/tests
+    environment:
+      DATABASE_URL: mysql+pymysql://microblog:password@db/microblog
+    depends_on:
+      - db
+
+volumes:
+  db_data:

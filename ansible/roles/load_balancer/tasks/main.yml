@@ -1,0 +1,70 @@
+---
+- name: Upgrade system
+  apt: upgrade=dist update_cache=yes
+
+- name: Install nginx
+  apt: name=nginx state=latest
+
+- name: Ensure Python is installed
+  raw: test -e /usr/bin/python || (apt-get update -y && apt-get install -y python)
+
+- name: Ensure Pip is installed
+  raw: test -e /usr/bin/pip || (apt-get update -y && apt-get install -y python-pip)
+
+- name: Update requests_toolbelt and urllib3 packages
+  pip:
+    name:
+      - requests_toolbelt
+      - urllib3
+    state: latest
+
+- name: Install certbot
+  apt: name=python-certbot-nginx state=latest
+
+- name: Check if cert is already present
+  stat:
+    path: /etc/letsencrypt/live/{{ domain_name }}/cert.pem
+  register: cert_installed
+
+- name: Install cert
+  shell: "certbot certonly --nginx --noninteractive --expand --agree-tos --email {{ admin_email }} -d {{ domain_name }} -d www.{{ domain_name }}"
+  when: not cert_installed.stat.exists
+
+- name: Remove default nginx config
+  file: name=/etc/nginx/sites-enabled/default state=absent
+
+- name: Copy ngnínx.conf.j2
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+- name: Copy load-balancer.conf.j2
+  template:
+    src: templates/load-balancer.conf.j2
+    dest: /etc/nginx/sites-available/load-balancer.conf
+
+- name: Link load-balancer
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    dest: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: Run the nginx-prometheus-exporter container
+  docker_container:
+    name: nginx-prometheus-exporter
+    image: nginx/nginx-prometheus-exporter:0.4.2
+    restart_policy: always
+    state: started
+    ports:
+      - "9113:9113"
+    env:
+      nginx_scrape_uri: "https://{{ domain_name }}/metrics"
+      nginx_retries: "10"
+      nginx_ssl_verify: "false"
+      web_telemetry_path: "/prometheus"
+    command: "--nginx.scrape-uri=https://{{ domain_name }}/metrics --nginx.retries=10 --nginx.ssl-verify=false --web.telemetry-path=/prometheus"

@@ -56,6 +56,9 @@ THIS_MAKEFILE := $(call WHERE-AM-I)
 # Echo some nice helptext based on the target comment
 HELPTEXT = $(ECHO) "$(ACTION)--->" `egrep "^\# target: $(1) " $(THIS_MAKEFILE) | sed "s/\# target: $(1)[ ]*-[ ]* / /g"` "$(NO_COLOR)"
 
+# Tag for docker image build
+TAG ?= $(shell git describe --tags --abbrev=0)
+
 
 
 # ----------------------------------------------------------------------------
@@ -93,7 +96,8 @@ info:
 # target: validate                     - Validate code with pylint
 .PHONY: validate
 validate:
-	@pylint --rcfile=.pylintrc app tests
+	@/home/microblog/.venv/bin/pylint --rcfile=.pylintrc app tests
+
 
 
 
@@ -215,3 +219,25 @@ install-test:
 install-deploy:
 	${pip} install -r requirements/deploy.txt
 	cd ansible && ansible-galaxy install -r requirements.yml
+
+
+
+# target: bandit-test					 - Run SAST tool bandit to find security holes in the code. Skipping hashlib (B324) as it's false positive.
+.PHONY: bandit-test
+bandit-test:
+	bandit  -s B324 app/*.py app/auth/*.py app/errors/*.py app/main/*.py
+
+
+
+# target: dockle-test					 - Run SAST tool dockle to find security holes in the docker image.
+.PHONY: dockle-test
+dockle-test:
+	docker build -f docker/Dockerfile_prod -t microblog:$(TAG) .
+	dockle --ignore DKL-LI-0003 -f json microblog:$(TAG)
+
+# target: trivy-test
+.PHONY: trivy-test
+trivy-test:
+	docker build -f docker/Dockerfile_prod -t microblog:$(TAG) .
+	trivy image microblog:$(TAG) --scanners vuln,secret,config
+	trivy fs --scanners vuln,secret,config .

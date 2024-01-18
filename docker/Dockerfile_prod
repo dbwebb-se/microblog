@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1.4
+
+FROM python:3.8-alpine
+
+ARG APP_VERSION=unknown
+ENV APP_VERSION=${APP_VERSION}
+
+RUN adduser -D microblog
+
+WORKDIR /home/microblog
+
+COPY app app
+COPY migrations migrations
+COPY requirements requirements
+COPY requirements.txt microblog.py boot.sh ./
+COPY gunicorn_config.py gunicorn_config.py
+# Update the package manager and install necessary dependencies
+RUN apk update && \
+  apk upgrade && \
+  apk add --no-cache gcc musl-dev linux-headers
+
+RUN pip install --upgrade pip setuptools
+
+RUN <<-EOF
+    apk add --no-cache make && \
+    apk upgrade --no-cache && \
+    python -m venv .venv && \
+    .venv/bin/pip3 install --no-cache-dir -r requirements.txt && \
+    chmod +x boot.sh && \
+    chown -R microblog:microblog ./
+EOF
+
+HEALTHCHECK --interval=60s --timeout=20s --start-period=5s --retries=3 \
+  CMD curl --fail http://localhost:8000/ || exit 1
+
+ENV FLASK_APP microblog.py
+
+USER microblog
+
+ENV PROMETHEUS_MULTIPROC_DIR /tmp
+
+EXPOSE 8000
+ENTRYPOINT ["./boot.sh"]
