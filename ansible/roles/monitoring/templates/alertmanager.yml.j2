@@ -1,0 +1,8 @@
+route:
+  receiver: webhook_receiver
+
+receivers:
+  - name: webhook_receiver
+    webhook_configs:
+      - url: "{{ web_hook }}"
+        send_resolved: false

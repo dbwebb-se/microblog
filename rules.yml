@@ -1,0 +1,6 @@
+groups:
+  - name: Toggle Alarm Status
+    rules:
+      - alert: Toggled alarm
+        expr: (flask_http_request_duration_seconds_count{path="/alarmtoggle"} % 2) == 1
+        for: 10s

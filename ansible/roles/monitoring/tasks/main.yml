@@ -1,0 +1,111 @@
+- name: Install Docker and Dependencies
+  include_role:
+    name: docker_setup
+  tags: init
+
+- name: Create Monitoring Network
+  docker_network:
+    name: monitor
+
+- name: Create Prometheus Data Volume
+  community.docker.docker_volume:
+    name: prometheus_data
+
+- name: Create Grafana Data Volume
+  community.docker.docker_volume:
+    name: grafana_data
+
+- name: Copy Monitoring Volume Files
+  copy:
+    src: "files/"
+    dest: "/files/"
+  when: ansible_check_mode is not defined or not ansible_check_mode
+
+- name: Copy Prometheus configuration file
+  template:
+    src: prometheus.yml.j2
+    dest: /files/prometheus.yml
+
+- name: Copy Alertmanager Configuration File
+  template:
+    src: alertmanager.yml.j2
+    dest: /files/alertmanager.yml
+
+- name: Copy Grafana Configuration File
+  template:
+    src: grafana.ini.j2
+    dest: /files/grafana.ini
+
+- name: Create Prometheus Container
+  community.docker.docker_container:
+    name: prometheus
+    image: prom/prometheus:v2.31.1
+    restart_policy: "unless-stopped"
+    volumes:
+      - "/files/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - prometheus_data:/prometheus
+      - "/files/rules.yml:/etc/prometheus/rules.yml"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=24h"
+      - "--web.enable-lifecycle"
+    networks:
+      - name: monitor
+        aliases:
+          - prometheus
+    published_ports:
+      - "9090:9090"
+
+- name: Create Grafana Container
+  community.docker.docker_container:
+    name: grafana
+    image: grafana/grafana:8.2.4
+    restart_policy: "unless-stopped"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - /files/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - name: monitor
+        aliases:
+          - grafana
+    ports:
+      - "3000:3000"
+
+- name: Create Alert Manager Container
+  community.docker.docker_container:
+    name: alertmanager
+    image: prom/alertmanager:v0.23.0
+    restart_policy: "unless-stopped"
+    ports:
+      - "9093:9093"
+    volumes:
+      - "/files/alertmanager.yml:/config/alertmanager.yml"
+    command: --config.file=/config/alertmanager.yml
+    networks:
+      - name: monitor
+        aliases:
+          - alertmanager
+
+- name: Add Prometheus Datasource to Grafana
+  community.grafana.grafana_datasource:
+    name: Prometheus
+    is_default: True
+    url: "http://{{ groups['monitoring'][0] | default('localhost') }}:3000"
+    ds_type: prometheus
+    ds_url: "http://monitoring_prometheus:9090"
+    access: proxy
+  register: grafana_result
+
+- name: Create Node Dashboard
+  community.grafana.grafana_dashboard:
+    grafana_url: "http://{{ groups['monitoring'][0] | default('localhost') }}:3000"
+    path: "/files/{{ item.name }}.json"
+    overwrite: True
+  loop:
+    - {name: node}
+    - {name: nginx}
+    - {name: flask_dashboard}
+  ignore_errors: true

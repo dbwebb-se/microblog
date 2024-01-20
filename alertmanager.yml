@@ -1,0 +1,8 @@
+route:
+  receiver: webhook_alerts
+
+receivers:
+  - name: webhook_alerts
+    webhook_configs:
+      - url: "https://webhook.site/43c10c09-b2d7-4125-a74f-0a06b3e9d5ff"
+        send_resolved: false

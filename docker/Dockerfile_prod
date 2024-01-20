@@ -14,6 +14,7 @@ COPY app app
 COPY migrations migrations 
 COPY requirements requirements 
 COPY requirements.txt microblog.py docker/boot.sh ./
+COPY gunicorn_config.py gunicorn_config.py
 
 # Update the package manager and install necessary dependencies
 RUN apk update && \
@@ -35,6 +36,8 @@ EOF
 
 HEALTHCHECK --interval=60s --timeout=20s --start-period=5s --retries=3 \
   CMD curl --fail http://localhost:5000/ || exit 1
+
+ENV prometheus_multiproc_dir /tmp
 
 ENV FLASK_APP microblog.py
 

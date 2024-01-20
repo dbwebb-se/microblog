@@ -1,0 +1,6 @@
+groups:
+  - name: Active or not active alarm
+    rules:
+      - alert: ToggleAlarm
+        expr: (sum(flask_http_request_duration_seconds_count{instance="flask", method="GET", path="/alarmtoggle", status="404"}) % 2) == 1
+        for: 10s

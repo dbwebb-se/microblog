@@ -54,3 +54,6 @@
 - name: debug validation
   debug:
     var: nginx_validation
+
+- name: Set up initial user and metrics exporter
+  import_tasks: configure_metrics_exporter.yml
