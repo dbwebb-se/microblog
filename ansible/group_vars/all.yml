@@ -3,25 +3,25 @@
 ansible_python_interpreter: "python"
 
 region: northeurope
-resource_group: DIDA-BEHA20-DV1673-H23-LP2 # Change me
-domain_name: studbeh.tech # Change me
+resource_group: "{{ lookup('env', 'RESOURCE_GROUP') }}" # Change me
+domain_name: "{{ lookup('env', 'DOMAIN_NAME') }}" # Change me
 
-admin_email: beha20@student.bth.se 
+admin_email: "{{ lookup('env', 'ADMIN_EMAIL') }}" 
 
 vmtags:
-    StudentId: beha20 # Change me
+    StudentId: "{{ lookup('env', 'STUDENTID') }}" # Change me
 
 
-pub_ssh_key_location: '/Users/shark/.ssh/id_rsa.pub' # Change me, your local ssh key!
+pub_ssh_key_location: "{{ lookup('env', 'PUB_SSH_KEY_LOCATION') }}" # Change me, your local ssh key!
 
 
-server_user: "deploy"
-server_user_pass: "Apple123" # change me
+server_user: "{{ lookup('env', 'SERVER_USER') }}"
+server_user_pass: "{{ lookup('env', 'SERVER_USER_PASS') }}" # change me
 server_user_groups:
     -   sudo
 
-db_username: "microblog"
-db_password: "microblog123"
-db_name: "microblog"
+db_username: "{{ lookup('env', 'DB_USERNAME') }}"
+db_password: "{{ lookup('env', 'DB_PASSWORD') }}"
+db_name: "{{ lookup('env', 'DB_NAME') }}"
 
 app_version: "v1.0.6"
