@@ -34,7 +34,7 @@ jobs:
           pip install ansible
 
       - name: Run Rolling Update Playbook
-        run: doppler run -- ansible-playbook -i ansible/hosts ansible/cd.yml -e "github_release_tag=dev-beha20-kmom05"
+        run: doppler run -- ansible-playbook -i ansible/hosts ansible/cd.yml -e "github_release_tag=dev-beha20-kmom03"
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_DEV }}
