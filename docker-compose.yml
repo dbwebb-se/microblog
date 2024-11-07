@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'microblog'
+      MYSQL_USER: 'microblog'
+      MYSQL_PASSWORD: 'database-password'
+    ports:
+      - "3306:3306"
+
+  prod:
+    image: sibo18/microblog:1.0.0-prod
+    environment:
+      SECRET_KEY: "my-secret-key"
+      DATABASE_URL: "mysql+pymysql://microblog:database-password@mysql/microblog"
+    ports:
+      - "8000:5000"
+    depends_on:
+      - mysql
