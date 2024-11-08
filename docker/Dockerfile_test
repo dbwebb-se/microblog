@@ -1,0 +1,25 @@
+FROM python:3.9-slim
+
+# Work directory
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y make && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements/test-txt, prod.txt into container and install test.txt
+COPY requirements/test.txt /app/test.txt
+COPY requirements/prod.txt /app/prod.txt
+RUN pip install --no-cache-dir -r /app/test.txt
+
+# Copy files into container
+COPY .pylintrc /app/.pylintrc
+COPY pytest.ini /app/pytest.ini
+COPY Makefile /app/Makefile
+
+# Copy script into container
+COPY docker/make_test.sh /app/make_test.sh
+
+# Make make_test.sh executable
+RUN chmod +x /app/make_test.sh
+
+# Set make_test.sh as the default command to run
+CMD ["./make_test.sh"]
