@@ -10,6 +10,7 @@
 name: Publish Docker image
 
 on:
+  workflow_dispatch:   # For test running the workflow
   release:
     types: [published]
 
