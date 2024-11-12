@@ -60,6 +60,29 @@ class User(UserMixin, db.Model):
         current_app.logger.debug(f"Get gravatar {url}")
         return url
 
+    def follow(self, user):
+        """
+        Adds the specified user to the followed relationship
+        if the user is not already followed.
+        """
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        """
+        Removes the specified user from the followed relationship
+        if said user is being followed.
+        """
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        """
+        Checks to see if a user is in the followed relationship.
+        """
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
 class Post(db.Model):
     """
     Represents a User Post
