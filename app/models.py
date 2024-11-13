@@ -84,6 +84,10 @@ class User(UserMixin, db.Model):
             followers.c.followed_id == user.id).count() > 0
     
     def followed_posts(self):
+        """
+        Returns a query that returns all posts that the user is following,
+        including posts made by the user themselves.
+        """
         followed = Post.query.join(
             followers, (followers.c.followed_id == Post.user_id)).filter(
                 followers.c.follower_id == self.id) 
