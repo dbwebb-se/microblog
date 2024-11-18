@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM python:3.12-alpine
+FROM python:3.8-alpine
 RUN adduser -D microblog
 
 WORKDIR /home/microblog
@@ -22,3 +22,4 @@ USER microblog
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
+

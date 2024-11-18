@@ -1,6 +1,4 @@
 # ----------------------------------------------------------
-# Header - type(scope): Brief description
-# ----------------------------------------------------------
 #    * feat             A new feature - SemVar PATCH
 #    * fix              A bug fix - SemVar MINOR
 #    * BREAKING CHANGE  Breaking API change - SemVar MAJOR
@@ -13,7 +11,7 @@
 #    * ci               Change to CI pipeline/workflow
 #    * chore            General tooling/config/min refactor
 # ----------------------------------------------------------
-
+cd - Created docker publish yml and made build and test yml
 
 # ----------------------------------------------------------
 # Body - More description, if necessary
@@ -21,10 +19,5 @@
 #    * Motivation behind changes, more detail into how
 #      functionality might be affected, etc.
 # ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# Footer - Associated issues, PRs, etc.
-# ----------------------------------------------------------
-#    * Ex: Resolves Issue #207, see PR #15, etc.
-# ----------------------------------------------------------
+Made a github actions workflow that depends on the CI build and test
+workflow completing that pushes the Dockerfile_prod image to dockerhub.
