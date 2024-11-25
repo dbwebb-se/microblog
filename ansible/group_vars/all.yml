@@ -4,7 +4,7 @@ ansible_python_interpreter: "python3"
 
 region: northeurope
 resource_group: DIDA-SILN20-DV1673-H24-LP2 # Change me
-domain_name: micro-blog.tech # Change me
+domain_name: microblogdev.tech # Change me
 
 admin_email: simon.langstrom@hotmail.se
 
@@ -12,7 +12,7 @@ vmtags:
     StudentId: siln20 # Change me
 
 
-pub_ssh_key_location: 'keys/' # Change me, your local ssh key!
+pub_ssh_key_location: '/home/weirdness/.ssh/azure.pub' # Change me, your local ssh key!
 
 
 server_user: "deploy"
