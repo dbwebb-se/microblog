@@ -6,3 +6,13 @@
     become_method: sudo
     roles:
         -   10-first-minutes
+
+-   hosts:
+        -   appserver
+    remote_user: azureuser
+    become: yes
+    become_method: sudo
+    roles:
+        -   10-first-minutes
+        -   docker-microblog  
+
