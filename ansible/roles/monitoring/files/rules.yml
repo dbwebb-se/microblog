@@ -1,0 +1,28 @@
+groups:
+  - name: More get request than 20
+    rules:
+      - alert: Between20And25
+        expr: flask_http_request_total{method="get", status="200"} > 20 and flask_http_request_total{method="get", status="200"} < 25
+        for: 10s
+
+  - name: High cpu usage
+    rules:
+      - alert: HighCpuUsage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[10s])) * 100) > 80
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: High CPU usage detected
+          description: "CPU usage is above 80% for more than 1 minutes "
+
+  - name: High memory
+    rules:
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 80
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: High memory usage detected
+          description: "Memory usage is above 80% for more than 1 minutes"
