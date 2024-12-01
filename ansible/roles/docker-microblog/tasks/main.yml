@@ -1,0 +1,5 @@
+---
+-  name: Installs docker on a VM
+    apt:
+        force_apt_get: yes
+        name: "docker"
