@@ -1,0 +1,21 @@
+---
+# Dra ner Microblog-bilden
+- name: Pull Microblog Docker image
+  docker_image:
+    name: weirdnessunfolds/devops
+    tag: 11.0.2
+    source: pull
+
+# Starta Microblog-containern
+- name: Start Microblog container
+  docker_container:
+    name: microblog
+    image: weirdnessunfolds/devops:11.0.2
+    state: started
+    restart_policy: always
+    env:
+      SECRET_KEY: "my-secret-key"
+      DATABASE_URL: "mysql+pymysql://microblog:database-password@{{ groups.database[0] }}/microblog"
+    ports:
+      - "8000:8000"
+    command: gunicorn -b 0.0.0.0:8000 -w 4 microblog:app
