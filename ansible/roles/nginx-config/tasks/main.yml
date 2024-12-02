@@ -8,6 +8,16 @@
 
 - name: Copy nginx config files to loadbalancer
   template:
-    src:
-    - nginx.conf.j2
+    src: files/nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+
+- name: Copy loadbalancer nginx config files to loadbalancer
+  template:
+    src: files/load-balancer.conf.j2
+    dest: /etc/nginx/sites-available/load-balancer.conf
+
+- name: Link loadbalancer nginx config to sites-enabled
+  file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    dest: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link
