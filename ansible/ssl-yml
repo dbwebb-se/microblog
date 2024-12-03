@@ -1,0 +1,12 @@
+---
+- hosts: loadbalaner
+  become: yes
+  roles:
+    - role: geerlingguy.certbot
+      certbot_create_if_missing: true
+      certbot_certs:
+        - domains:
+            - "example.com"
+            - "www.example.com"
+
+            

@@ -2,4 +2,4 @@
 root_user: azureuser
 root_password: "9SYw=1jYZq" # change me
 
-lb_method: "round-robin"
+lb_method: "least_conn"
