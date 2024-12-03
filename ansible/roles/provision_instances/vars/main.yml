@@ -12,4 +12,3 @@ instances:
 relative_names:
     - name: www # www.<domain>
     - name: "@" # so <domain> works as a URL. Otherwise only www.<domain> would work.
-    - name: "{{ 'appserver' in iname | ternary(domain_name + '.' + iname, relative_name.name) }}"
