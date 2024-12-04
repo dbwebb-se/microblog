@@ -37,13 +37,8 @@
 
 
 - name: 'Get certificate'
-  command: "/usr/local/bin/certbot certonly  --standalone --register-unsafely-without-email --agree-tos --non-interactive  --expand -d microblogdev.tech"
-  args:
-    creates: "/etc/letsencrypt/live/microblogdev.tech"
+  command: "certbot certonly  --standalone --register-unsafely-without-email --agree-tos --non-interactive  --expand -d microblogdev.tech"
   ignore_errors: true
-  tags:
-    - nginx
-    - certbot 
 
 - name: Copy nginx config files to loadbalancer
   template:

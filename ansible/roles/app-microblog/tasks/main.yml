@@ -19,3 +19,8 @@
     ports:
       - "8000:8000"
     command: gunicorn -b 0.0.0.0:8000 -w 4 microblog:app
+
+- name: Create .well-known
+  file:
+    path: "/var/www/html/.well-known"
+    state: directory
