@@ -19,15 +19,7 @@
     - nginx
     - certbot
 
-- name: Register certbot
-  shell: |
-    certbot -n register --agree-tos --email simon.langstrom@hotmail.se
-    touch /etc/letsencrypt/.registered
-  args:
-    creates: /etc/letsencrypt/.registered
-  tags:
-    - nginx
-    - certbot
+
 
 - name: Setup cronjob for renewal
   cron:
@@ -45,7 +37,7 @@
 
 
 - name: 'Get certificate'
-  command: "/usr/local/bin/certbot -n --nginx --debug certonly --expand -d microblogdev.tech"
+  command: "/usr/local/bin/certbot certonly  --standalone --register-unsafely-without-email --agree-tos --non-interactive  --expand -d microblogdev.tech"
   args:
     creates: "/etc/letsencrypt/live/microblogdev.tech"
   ignore_errors: true
@@ -68,4 +60,3 @@
     src: /etc/nginx/sites-available/load-balancer.conf
     dest: /etc/nginx/sites-enabled/load-balancer.conf
     state: link
-
