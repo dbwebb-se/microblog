@@ -35,6 +35,10 @@
   set_fact:
     appserver_count: 2
 
+- name: Stop nginx
+  service:
+    name: nginx
+    state: stopped
 
 - name: 'Get certificate'
   command: "certbot certonly  --standalone --register-unsafely-without-email --agree-tos --non-interactive  --expand -d microblogdev.tech"
@@ -44,6 +48,8 @@
   template:
     src: files/nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+
+
 
 - name: Copy loadbalancer nginx config files to loadbalancer
   template:
@@ -55,3 +61,12 @@
     src: /etc/nginx/sites-available/load-balancer.conf
     dest: /etc/nginx/sites-enabled/load-balancer.conf
     state: link
+
+- name: Validate nginx config
+  command: "nginx -t"
+
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started

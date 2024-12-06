@@ -17,10 +17,6 @@
       SECRET_KEY: "my-secret-key"
       DATABASE_URL: "mysql+pymysql://microblog:database-password@{{ groups.database[0] }}/microblog"
     ports:
-      - "8000:8000"
+      - "8000:5000"
     command: gunicorn -b 0.0.0.0:8000 -w 4 microblog:app
 
-- name: Create .well-known
-  file:
-    path: "/var/www/html/.well-known"
-    state: directory
