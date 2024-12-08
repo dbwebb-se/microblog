@@ -1,2 +1,6 @@
 [local]
 localhost ansible_connection=local
+
+[appservers]
+appserver1 ansible_host=appserver1.micro-blog.tech
+appserver2 ansible_host=appserver2.micro-blog.tech
