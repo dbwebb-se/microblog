@@ -8,9 +8,9 @@
 
   tasks:
      - name: Install packages
-        apt:
-          force_apt_get: yes
-          name: "jq"
+       apt:
+         force_apt_get: yes
+         name: "jq"
   
     - name: jq latest
       command: latest_tag=$(curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name')
