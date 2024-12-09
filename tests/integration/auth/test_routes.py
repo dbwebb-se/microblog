@@ -117,4 +117,3 @@ def test_version_route(client):
     
     # Check that the rendered page contains the version information
     assert b"Current Version: weirdnessunfolds/devops:11.0.3" in response.data
-
