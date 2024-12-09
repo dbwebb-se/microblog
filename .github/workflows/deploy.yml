@@ -8,15 +8,14 @@ jobs:
   call_tests:
     name: Call docker image publish
     uses: ./.github/workflows/docker-publish.yml
+    secrets: inherit
   deploy:
     runs-on: ubuntu-latest
     needs: call_tests
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
-
-    
+      uses: actions/checkout@v4    
     - name: Setup SSH 
       shell: bash
       run: |
