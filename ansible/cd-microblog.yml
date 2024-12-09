@@ -7,15 +7,8 @@
   become_method: sudo
 
   tasks:
-    - name: Install jq
-      command: sudo apt-get install -y jq
-  
-    - name: jq latest
-      command: curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name'
-      register: latest_tag_output
-
     - set_fact:
-      latest_tag: "{{ latest_tag_output.stdout }}"
+      latest_tag: "11.0.2"
 
     - name: Pull the latest Docker image for Microblog
       ansible.builtin.docker_image:
