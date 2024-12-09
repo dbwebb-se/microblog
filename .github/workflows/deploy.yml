@@ -16,6 +16,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Include Docker Publish Workflow
+      uses: ./.github/workflows/docker-publish.yml
+      
+
     
     - name: Setup SSH 
       shell: bash
