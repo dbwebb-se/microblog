@@ -27,15 +27,10 @@
         name: weirdnessunfolds/devops:{{ latest_tag }}
         source: pull
       
-    - name: Install dependencies
-      command: npm install
-      args:
-        chdir: /var/www/microblog
-
     - name: Restart the Microblog application
-      service:
+      docker_container:
         name: microblog
-        state: restarted
+        restart: yes
 
     - name: Check application health
       uri:
