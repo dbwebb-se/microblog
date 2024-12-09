@@ -102,3 +102,18 @@ def test_logout(client, register_user_response, user_dict):
         follow_redirects=True,
     )
     assert response.status_code == 405
+
+def test_version_route(client):
+    """
+    Test that the /version route returns the correct version
+    """
+    response = client.get('/version', follow_redirects=True)
+    
+    # Assert that the request was successful (200 OK)
+    assert response.status_code == 200
+    
+    # Check that the rendered page contains the expected title
+    assert b"<h1>Version</h1>" in response.data
+    
+    # Check that the rendered page contains the version information
+    assert b"Current Version: weirdnessunfolds/devops:11.0.3" in response.data
