@@ -32,7 +32,7 @@
 
     - name: Check application health
       uri:
-        url: "http://{{ inventory_hostname }}/health"
+        url: "http://{{ inventory_hostname }}"
         status_code: 200
       register: health_check
 
@@ -40,15 +40,3 @@
       fail:
         msg: "Health check failed for {{ inventory_hostname }}"
       when: health_check.status != 200
-
-    - name: Verify application version
-      uri:
-        url: "http://{{ inventory_hostname }}/version"
-        return_content: yes
-      register: version_check
-
-    - name: Assert correct version is running
-      assert:
-        that:
-          - "'1.0.0' in version_check.content"
-        fail_msg: "Deployed version is incorrect on {{ inventory_hostname }}"

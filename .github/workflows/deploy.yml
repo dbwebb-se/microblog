@@ -5,6 +5,9 @@ on:
   release:
     types: [published]
 jobs:
+  call_tests:
+    name: Call docker image publish
+    uses: ./.github/workflows/docker-publish.yml
   deploy:
     runs-on: ubuntu-latest
 
