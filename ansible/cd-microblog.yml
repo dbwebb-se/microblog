@@ -7,12 +7,17 @@
   become_method: sudo
 
   tasks:
-    - name: Pull the latest version of Microblog
-      git:
-        repo: 'https://github.com/WeirdnessUnfolds/microblog.git'
-        dest: /var/www/microblog
-        version: main
-
+    - name: Install jq
+      command: sudo apt-get install jq
+  
+    - name: jq latest
+      command: latest_tag=$(curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name')
+  
+  - name: Pull the latest Docker image for Microblog
+      ansible.builtin.docker_image:
+        name: weirdnessunfolds/devops:$latest_tag
+        source: pull
+      
     - name: Install dependencies
       command: npm install
       args:

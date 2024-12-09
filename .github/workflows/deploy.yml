@@ -3,7 +3,7 @@ name: Deploy Microblog
 on:
   push:
     tags:
-      - 'v*'  # Trigga deployment vid versionstaggar som v1.0.0
+      - 'v*'  # Triggers deployment for version tags like v1.0.0
 
 jobs:
   deploy:
@@ -12,11 +12,15 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    
+    - name: Setup SSH 
+      shell: bash
+      run: |
+        eval `ssh-agent -s`
+        mkdir -p /home/runner/.ssh/
+        touch /home/runner/.ssh/id_rsa
+        echo -e "${{secrets.SSH_PRIVATE_KEY}}" > /home/runner/.ssh/id_rsa
+        chmod 700 /home/runner/.ssh/id_rsa
 
     - name: Install Ansible
       run: |
