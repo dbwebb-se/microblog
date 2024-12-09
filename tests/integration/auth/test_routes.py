@@ -103,7 +103,7 @@ def test_logout(client, register_user_response, user_dict):
     )
     assert response.status_code == 405
 
-def test_version_route(client):
+def test_version_route(client):  gsdkghslakjdghlasghlskjajgdhöasdkjg
     """
     Test that the /version route returns the correct version
     """
