@@ -11,7 +11,7 @@
       command: sudo apt-get install -y jq
   
     - name: jq latest
-      command: curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name'
+      shell: curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name'
       register: latest_tag_output
     - debug: var=latest_tag_output
     - name: Set latest fact fact
