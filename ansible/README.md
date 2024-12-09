@@ -103,7 +103,7 @@ ansible_python_interpreter  = python3
 inventory                   = hosts
 
 [inventory]
-enable_plugins              = ini
+enable_plugins               = ini
 
 [ssh_connection]
 ssh_args =
