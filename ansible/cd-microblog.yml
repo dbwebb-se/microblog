@@ -14,9 +14,9 @@
      command: curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name'
      register: latest_tag_output
 
-- set_fact:
-  latest_tag: "{{ latest_tag_output.stdout }}"
-  
+   - set_fact:
+      latest_tag: "{{ latest_tag_output.stdout }}"
+
     - name: Pull the latest Docker image for Microblog
       ansible.builtin.docker_image:
         name: weirdnessunfolds/devops:$latest_tag
