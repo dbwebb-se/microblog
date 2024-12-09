@@ -7,15 +7,13 @@
   become_method: sudo
 
   tasks:
-     - name: Install packages
-       apt:
-         force_apt_get: yes
-         name: "jq"
+    - name: Install jq
+      command: sudo apt-get install -y jq
   
     - name: jq latest
       command: latest_tag=$(curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name')
   
-    - name: Pull the latest Docker image for Microblog
+  - name: Pull the latest Docker image for Microblog
       ansible.builtin.docker_image:
         name: weirdnessunfolds/devops:$latest_tag
         source: pull
