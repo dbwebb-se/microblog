@@ -36,3 +36,4 @@ jobs:
         ansible-playbook -i ansible/hosts ansible/cd-microblog.yml
       env:
         ANSIBLE_HOST_KEY_CHECKING: false
+

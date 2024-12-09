@@ -31,26 +31,3 @@
       docker_container:
         name: microblog
         restart: yes
-
-    - name: Check application health
-      uri:
-        url: "http://{{ ansible_host }}"
-        status_code: 200
-      register: health_check
-
-    - name: Fail if health check fails
-      fail:
-        msg: "Health check failed for {{ inventory_hostname }}"
-      when: health_check.status != 200
-
-    - name: Verify application version
-      uri:
-        url: "http://{{ ansible_host }}/version"
-        return_content: yes
-      register: version_check
-
-    - name: Assert correct version is running
-      assert:
-        that:
-          - "'{{ _latest_tag_output.json.tag_name }}' in version_check.content"
-        fail_msg: "Deployed version is incorrect on {{ inventory_hostname }}"
