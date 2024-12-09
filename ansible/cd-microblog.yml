@@ -11,12 +11,16 @@
       command: sudo apt-get install -y jq
   
     - name: jq latest
-      shell: curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name'
-      register: latest_tag_output
-    - debug: var=latest_tag_output
-    - name: Set latest fact fact
+      uri:
+        url: "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest"
+        body_format: json
+      register: _latest_tag_output
+      until: _latest_tag_output.status == 200
+      retries: 5
+
+    - name: Set latest tag fact
       set_fact:
-        latest_tag: "{{ latest_tag_output.stdout }}"
+        latest_tag: "{{ _latest_tag_output.json.tag_name }}"
 
     - name: Pull the latest Docker image for Microblog
       ansible.builtin.docker_image:
