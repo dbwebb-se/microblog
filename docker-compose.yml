@@ -10,7 +10,7 @@ services:
       - "3306:3306"
 
   prod:
-    image: sibo18/microblog:1.0.1-prod
+    image: weirdnessunfolds/devops:latest
     environment:
       SECRET_KEY: "my-secret-key"
       DATABASE_URL: "mysql+pymysql://microblog:database-password@mysql/microblog"
