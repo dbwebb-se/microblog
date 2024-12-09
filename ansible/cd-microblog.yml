@@ -19,7 +19,7 @@
 
     - name: Pull the latest Docker image for Microblog
       ansible.builtin.docker_image:
-        name: weirdnessunfolds/devops:$latest_tag
+        name: weirdnessunfolds/devops:{{ latest_tag }}
         source: pull
       
     - name: Install dependencies
