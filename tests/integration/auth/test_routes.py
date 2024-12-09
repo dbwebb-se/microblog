@@ -103,7 +103,7 @@ def test_logout(client, register_user_response, user_dict):
     )
     assert response.status_code == 405
 
-def test_version_route(client):  gsdkghslakjdghlasghlskjajgdhöasdkjg
+def test_version_route(client):
     """
     Test that the /version route returns the correct version
     """
@@ -117,3 +117,4 @@ def test_version_route(client):  gsdkghslakjdghlasghlskjajgdhöasdkjg
     
     # Check that the rendered page contains the version information
     assert b"Current Version: weirdnessunfolds/devops:11.0.3" in response.data
+
