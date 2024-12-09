@@ -1,0 +1,72 @@
+---
+- name: Install nginx and pip
+  apt:
+    name:
+    - nginx
+    - python3
+    - pip
+    state: latest
+    update_cache: yes
+
+
+- name: Install certbot
+  pip:
+    name:
+      - certbot
+      - certbot-nginx
+    executable: pip3
+  tags:
+    - nginx
+    - certbot
+
+
+
+- name: Setup cronjob for renewal
+  cron:
+    name: certbot-renewal
+    job: "/bin/bash -lc '/usr/local/bin/certbot -q renew'"
+    minute: "0"
+    hour: "14"
+  tags:
+    - nginx
+    - certbot
+
+- name: Set appserver count
+  set_fact:
+    appserver_count: 2
+
+- name: Stop nginx
+  service:
+    name: nginx
+    state: stopped
+
+- name: 'Get certificate'
+  command: "certbot certonly  --standalone --register-unsafely-without-email --agree-tos --non-interactive  --expand -d microblogdev.tech"
+  ignore_errors: true
+
+- name: Copy nginx config files to loadbalancer
+  template:
+    src: files/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+
+
+- name: Copy loadbalancer nginx config files to loadbalancer
+  template:
+    src: files/load-balancer.conf.j2
+    dest: /etc/nginx/sites-available/load-balancer.conf
+
+- name: Link loadbalancer nginx config to sites-enabled
+  file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    dest: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link
+
+- name: Validate nginx config
+  command: "nginx -t"
+
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started

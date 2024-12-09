@@ -65,3 +65,10 @@ def logout():
     current_app.logger.debug(f"{current_user} loged out")
     logout_user()
     return redirect(url_for('main.index'))
+
+@bp.route('/version')
+def version():
+    """
+    Simple route that says something on the website
+    """
+    return render_template('auth/version.html')

@@ -8,4 +8,4 @@
     # the keys below are dynamic and can have any name and value. A way to add data to the host which can be read later
     iname: "{{ item.name }}" 
     itype: "{{ item.type }}"
-  with_items: "{{instances}}"
+  with_items: "{{ instances }}"

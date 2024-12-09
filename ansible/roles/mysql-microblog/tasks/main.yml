@@ -1,0 +1,20 @@
+---
+- name: Pull MySQL Docker image
+  docker_image:
+    name: mysql/mysql-server
+    tag: "5.7"
+    source: pull
+
+- name: Start MySQL container
+  docker_container:
+    name: mysql_database
+    image: mysql/mysql-server:5.7
+    state: started
+    restart_policy: always
+    env:
+      MYSQL_ROOT_PASSWORD: 'root-password'
+      MYSQL_DATABASE: 'microblog'
+      MYSQL_USER: 'microblog'
+      MYSQL_PASSWORD: 'database-password'
+    ports:
+      - "3306:3306"

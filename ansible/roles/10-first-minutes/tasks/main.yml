@@ -43,6 +43,17 @@
         key: "{{ lookup('file', item) }}"
     with_items: "{{ pub_ssh_key_location }}"
 
+-   name: Set SSH keys for all users
+    authorized_key:
+        user: deploy
+        key: "{{ item }}"
+        state: present
+    with_file:
+        - azure_new.pub
+        - azure_new_sb.pub
+
+
+
 
 -   name: Add user to sudoers
     lineinfile:
