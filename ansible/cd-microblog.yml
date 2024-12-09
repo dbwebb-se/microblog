@@ -34,7 +34,7 @@
 
     - name: Check application health
       uri:
-        url: "http://{{ inventory_host }}"
+        url: "http://{{ ansible_host }}"
         status_code: 200
       register: health_check
 
@@ -45,7 +45,7 @@
 
     - name: Verify application version
       uri:
-        url: "http://{{ inventory_host }}/version"
+        url: "http://{{ ansible_host }}/version"
         return_content: yes
       register: version_check
 
