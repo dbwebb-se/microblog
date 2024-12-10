@@ -1,27 +1,30 @@
 name: Deploy Microblog
 
 on:
-  push:
-    tags:
-      - 'v*'  # Triggers deployment for version tags like v1.0.0
-
+  workflow_dispatch:   # For test running the workflow
+  release:
+    types: [published]
 jobs:
+  call_tests:
+    name: Call docker image publish
+    uses: ./.github/workflows/docker-publish.yml
+    secrets: inherit
   deploy:
     runs-on: ubuntu-latest
+    needs: call_tests
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
-
-    
+      uses: actions/checkout@v4    
     - name: Setup SSH 
       shell: bash
       run: |
-        eval `ssh-agent -s`
         mkdir -p /home/runner/.ssh/
         touch /home/runner/.ssh/id_rsa
         echo -e "${{secrets.SSH_PRIVATE_KEY}}" > /home/runner/.ssh/id_rsa
         chmod 700 /home/runner/.ssh/id_rsa
+        eval "$(ssh-agent -s)"
+        ssh-add /home/runner/.ssh/id_rsa
 
     - name: Install Ansible
       run: |
@@ -33,3 +36,4 @@ jobs:
         ansible-playbook -i ansible/hosts ansible/cd-microblog.yml
       env:
         ANSIBLE_HOST_KEY_CHECKING: false
+

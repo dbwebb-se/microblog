@@ -8,45 +8,46 @@
 
   tasks:
     - name: Install jq
-      command: sudo apt-get install jq
+      command: sudo apt-get install -y jq
   
     - name: jq latest
-      command: latest_tag=$(curl -s "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest" | jq -r '.tag_name')
-  
-  - name: Pull the latest Docker image for Microblog
+      uri:
+        url: "https://api.github.com/repos/WeirdnessUnfolds/microblog/releases/latest"
+        body_format: json
+      register: _latest_tag_output
+      until: _latest_tag_output.status == 200
+      retries: 5
+
+    - name: Set latest tag fact
+      set_fact:
+        latest_tag: "{{ _latest_tag_output.json.tag_name }}"
+
+    - name: Pull the latest Docker image for Microblog
       ansible.builtin.docker_image:
-        name: weirdnessunfolds/devops:$latest_tag
+        name: weirdnessunfolds/devops:{{ latest_tag }}
         source: pull
       
-    - name: Install dependencies
-      command: npm install
-      args:
-        chdir: /var/www/microblog
-
     - name: Restart the Microblog application
-      service:
+      docker_container:
         name: microblog
-        state: restarted
+        restart: yes
 
-    - name: Check application health
-      uri:
-        url: "http://{{ inventory_hostname }}/health"
-        status_code: 200
-      register: health_check
+    - name: Get Docker container details
+      docker_container_info:
+        name: microblog
+      register: container_details
 
-    - name: Fail if health check fails
-      fail:
-        msg: "Health check failed for {{ inventory_hostname }}"
-      when: health_check.status != 200
+    
+    - name: Extract image tag
+      set_fact:
+        image_tag: "{{ container_details.container.Config.Image | split(':') | last }}"
 
-    - name: Verify application version
-      uri:
-        url: "http://{{ inventory_hostname }}/version"
-        return_content: yes
-      register: version_check
+    - name: Debug image tag
+      debug:
+        var: image_tag
 
     - name: Assert correct version is running
       assert:
         that:
-          - "'1.0.0' in version_check.content"
+          - image_tag == latest_tag
         fail_msg: "Deployed version is incorrect on {{ inventory_hostname }}"
