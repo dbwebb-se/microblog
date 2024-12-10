@@ -33,14 +33,14 @@
         restart: yes
 
     - name: Get Docker container details
-      docker_container:
+      docker_container_info:
         name: microblog
         state: present
       register: container_details
 
     - name: Extract image tag
       set_fact:
-        image_tag: "{{ container_details.image | split(':')[0] | last }}"
+        image_tag: "{{ container_details.container_info.Config.Image | split(':')[0] | last }}"
 
     - name: Assert correct version is running
       assert:
