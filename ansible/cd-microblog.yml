@@ -42,6 +42,10 @@
       set_fact:
         image_tag: "{{ container_details.container.Config.Image | split(':') | last }}"
 
+    - name: Debug image tag
+      debug:
+        var: image_tag
+
     - name: Assert correct version is running
       assert:
         that:
