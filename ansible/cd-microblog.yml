@@ -31,3 +31,19 @@
       docker_container:
         name: microblog
         restart: yes
+
+    - name: Get Docker container details
+      docker_container:
+        name: microblog
+        state: present
+      register: container_details
+
+    - name: Extract image tag
+      set_fact:
+        image_tag: "{{ container_details.image | split(':')[0] | last }}"
+
+    - name: Assert correct version is running
+      assert:
+        that:
+          - image_tag == latest_tag
+        fail_msg: "Deployed version is incorrect on {{ inventory_hostname }}"
