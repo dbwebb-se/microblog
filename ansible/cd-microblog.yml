@@ -31,12 +31,20 @@
       debug:
         var: latest_tag
       
-    - name: Restart the Microblog application
+    - name: Restart the Microblog application and pull latest tag
       docker_container:
         name: microblog
         image: weirdnessunfolds/devops:{{ latest_tag }}
         pull: yes
         restart: yes
+        state: started
+        restart_policy: always
+        env:
+          SECRET_KEY: "my-secret-key"
+          DATABASE_URL: "mysql+pymysql://microblog:database-password@{{ groups.database[0] }}/microblog"
+        ports:
+          - "8000:5000"
+        command: gunicorn -b 0.0.0.0:8000 -w 4 microblog:app
 
     - name: Get Docker container details
       docker_container_info:
