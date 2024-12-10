@@ -1,4 +1,4 @@
-<---
+---
 - name: Continuous Deployment for Microblog
   hosts: some_appservers
   serial: 1  # Rullar ut en server i taget
