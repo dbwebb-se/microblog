@@ -37,7 +37,7 @@
         name: microblog
       register: container_details
 
-   - name: Print information about container
-     ansible.builtin.debug:
-      var: container_details.container
-     when: container_details.exists
+    - name: Print information about container
+      ansible.builtin.debug:
+        var: container_details.container
+      when: container_details.exists
