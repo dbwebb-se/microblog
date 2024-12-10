@@ -46,6 +46,9 @@
       set_fact:
         image_tag: "{{ container_details.container.Config.Image | split(':') | last }}"
 
+    - name: Debug container details
+      debug:
+        var: container_details.container
     - name: Debug image tag
       debug:
         var: image_tag
