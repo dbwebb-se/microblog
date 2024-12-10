@@ -39,7 +39,7 @@
 
     - name: Extract image tag
       set_fact:
-        image_tag: "{{ container_details.container_info.Config.Image | split(':')[1] | last }}"
+        image_tag: "{{ container_details.container_info.Config.Image | split(':') | last }}"
 
     - name: Assert correct version is running
       assert:
