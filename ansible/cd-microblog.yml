@@ -39,6 +39,9 @@
         restart: yes
         state: started
         restart_policy: always
+        env:
+          SECRET_KEY: "my-secret-key"
+          DATABASE_URL: "mysql+pymysql://microblog:database-password@13.69.197.102/microblog"
         ports:
           - "8000:5000"
         command: gunicorn -b 0.0.0.0:8000 -w 4 microblog:app
