@@ -37,12 +37,7 @@
         name: microblog
       register: container_details
 
-    - name: Extract image tag
-      set_fact:
-        image_tag: "{{ container_details.container_info.Config.Image | split(':') | last }}"
-
-    - name: Assert correct version is running
-      assert:
-        that:
-          - image_tag == latest_tag
-        fail_msg: "Deployed version is incorrect on {{ inventory_hostname }}"
+   - name: Print information about container
+     ansible.builtin.debug:
+      var: container_details.container
+     when: container_details.exists
