@@ -84,6 +84,10 @@ add-ssh:
 bandit:
 	bandit -r app/ -f html -o bandit-report.html || true
 
+.PHONY: dockle
+dockle:
+	dockle --exit-code 1 weirdnessunfolds/devops:v11.1.0 2>&1 | grep -E 'FATAL|INFO' | sort
+
 
 # target: info                         - Displays versions.
 .PHONY: info
