@@ -77,8 +77,12 @@ help:
 .PHONY: add-ssh
 add-ssh:
 	eval `ssh-agent -s`
-	ssh-add <path/too/ssh-key>
+	ssh-add /root/.ssh/azure
 
+# Runs badit commando for route app/
+.PHONY: bandit
+bandit:
+	bandit -r app/ -f html -o bandit-report.html || true
 
 
 # target: info                         - Displays versions.
