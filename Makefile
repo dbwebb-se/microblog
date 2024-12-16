@@ -232,6 +232,13 @@ install-deploy:
 
 # target: fs-scan                        - Scan the filesystem with Trivy
 current_dir := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+
 .PHONY: fs-scan
 fs-scan:
-	trivy fs $(current_dir) --skip-dirs $(current_dir).venv --skip-dirs $(current_dir)venv
+	@command -v trivy >/dev/null 2>&1 || { \
+		sudo apt-get update -qq && \
+		sudo apt-get install -y -qq wget && \
+		wget -qO- https://github.com/aquasecurity/trivy/releases/download/v0.45.0/trivy_0.45.0_Linux-64bit.tar.gz | tar xz && \
+		sudo mv trivy /usr/local/bin/; \
+	}
+	@trivy fs $(current_dir) --skip-dirs $(current_dir).venv --skip-dirs $(current_dir)venv
