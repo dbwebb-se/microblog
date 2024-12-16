@@ -77,7 +77,9 @@ help:
 .PHONY: add-ssh
 add-ssh:
 	eval `ssh-agent -s`
-	ssh-add /root/.ssh/azure
+	ssh-add <path/too/ssh-key>
+
+
 
 # Runs badit commando for route app/
 .PHONY: bandit
@@ -86,7 +88,9 @@ bandit:
 
 .PHONY: dockle
 dockle:
-	dockle weirdnessunfolds/devops:v11.1.0 2>&1 | grep -E 'FATAL' || true
+	dockle --exit-code 1 weirdnessunfolds/devops:v11.1.0 2>&1 | grep -E 'FATAL|INFO' | sort
+
+
 
 
 # target: info                         - Displays versions.
@@ -223,3 +227,11 @@ install-test:
 install-deploy:
 	${pip} install -r requirements/deploy.txt
 	cd ansible && ansible-galaxy install -r requirements.yml
+
+
+
+# target: fs-scan                        - Scan the filesystem with Trivy
+current_dir := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+.PHONY: fs-scan
+fs-scan:
+	trivy fs $(current_dir) --skip-dirs $(current_dir).venv --skip-dirs $(current_dir)venv
