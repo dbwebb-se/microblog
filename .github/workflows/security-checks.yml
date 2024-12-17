@@ -17,11 +17,28 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Install necessary tools (Bandit, Trivy, Dockle)
-      - name: Install dependencies (Bandit, Trivy, and Dockle)
+      # Remove Docker, containerd, and related packages
+      - name: Remove Docker, containerd, and related packages
         run: |
+          # Remove Docker and containerd packages completely
+          sudo apt-get remove -y docker docker-engine docker.io containerd runc
+          sudo apt-get purge -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-compose
+
+          # Remove any leftover configuration files and binaries
+          sudo rm -rf /etc/bash_completion.d/docker /usr/local/bin/docker-compose /etc/bash_completion.d/docker-compose
+
+          # Clean up any remaining packages
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+
+          # Update the apt package list
           sudo apt-get update -qq
-          sudo apt-get install -y make curl wget python3-pip docker.io
+
+      # Reinstall Docker and dependencies
+      - name: Reinstall Docker, containerd, and docker-compose
+        run: |
+          # Install containerd, docker, and docker-compose
+          sudo apt install -y containerd docker.io docker-compose
 
           # Install Bandit (Python security checks)
           pip install bandit
