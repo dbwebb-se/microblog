@@ -18,20 +18,26 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       # Install dependencies: Make, Docker, Python, and other required tools
-      - name: Install dependencies
+      - name: Install dependencies and remove conflicting containerd
         run: |
+          # Remove any existing containerd package to avoid conflicts
+          sudo apt-get remove -y containerd
+          sudo apt-get autoremove -y
+
+          # Update apt package list
           sudo apt-get update -qq
+
+          # Install necessary dependencies
           sudo apt-get install -y make docker.io curl wget python3-pip
 
           # Install Bandit (Python security checks)
           pip install bandit
 
-          # Install Trivy
+          # Install Trivy (Docker image security scanner)
           curl -s https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo bash
 
-          # Install Dockle (Dockerfile security checker)
-          sudo apt-get install -y jq  # Required for Dockle
-          curl -s https://github.com/goodwithtech/dockle/releases/download/v0.4.0/dockle-linux-amd64.tar.gz | tar xz && sudo mv dockle /usr/local/bin
+          # Install Docker (in case it's not already installed)
+          curl -fsSL https://get.docker.com | sudo sh
 
       # Run the Bandit security scan using makefile target
       - name: Run Bandit Security Scan
