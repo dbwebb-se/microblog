@@ -242,3 +242,9 @@ fs-scan:
 		sudo mv trivy /usr/local/bin/; \
 	}
 	@trivy fs $(current_dir) --skip-dirs $(current_dir).venv --skip-dirs $(current_dir)venv
+
+target: image-scan                     - Scan the image with Trivy
+.PHONY: image-scan
+image-scan:
+	@docker build -t microblog . -f docker/Dockerfile_prod
+	@trivy image microblog
