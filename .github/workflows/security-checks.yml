@@ -1,0 +1,57 @@
+name: Security Checks
+
+# Trigger manually using workflow_dispatch
+on:
+  workflow_dispatch:   # Allows manual triggering of the workflow
+
+jobs:
+  security-checks:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Docker Buildx for Docker builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Install Bandit, Trivy, and Docker
+      - name: Install Bandit, Trivy, and Docker
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y docker.io
+          pip install bandit
+          curl -s https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo bash
+          curl -fsSL https://get.docker.com | sudo sh
+
+      # Run Bandit for Python security checks
+      - name: Run Bandit Security Scan
+        run: |
+          bandit -r app/ -f html -o bandit-report.html || true
+
+      # Run Trivy for Docker image security scan
+      - name: Run Trivy Image Scan
+        run: |
+          docker build -t microblog . -f docker/Dockerfile_prod
+          trivy image --skip-update --no-progress microblog
+
+      # Run Dockle for Docker image security check
+      - name: Run Dockle Security Scan
+        run: |
+          docker build -t microblog . -f docker/Dockerfile_prod
+          docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
+          dockle --exit-code 1 microblog 2>&1 | grep -E 'FATAL|INFO' | sort
+
+      # Optional: Print reports if they exist
+      - name: Print Bandit Report
+        run: |
+          if [ -f bandit-report.html ]; then cat bandit-report.html; fi
+
+      # Check results and push Docker image if security checks pass
+      - name: Push Docker image (if all checks pass)
+        if: success()  # Push the Docker image only if all checks are successful
+        run: |
+          docker tag microblog mydockerrepo/microblog:latest
+          docker push mydockerrepo/microblog:latest
