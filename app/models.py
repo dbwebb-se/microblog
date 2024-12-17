@@ -1,8 +1,6 @@
 """
 Contains Databse model classes
 """
-
-from hashlib import md5
 from hashlib import sha256
 from datetime import datetime
 from flask import current_app
