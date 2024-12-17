@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 import pytest
 from app.models import User, Post
 from app import db
+import hashlib
+
 
 @pytest.fixture
 def user1():
@@ -39,11 +41,17 @@ def test_password_hashing(test_app, user1):
 
 def test_avatar(test_app, user1):
     """
-    Test creation of Gravatar URL
+    Test creation of Gravatar URL with SHA-256 hashing
     """
-    assert user1.avatar(128) == ('https://www.gravatar.com/avatar/'
-                                 'd4c74594d841139328695756648b6bd6'
-                                 '?d=retro&s=128')
+    email = 'john@example.com'
+    # Generate SHA-256 hash for the email
+    sha256_hash = hashlib.sha256(email.lower().encode('utf-8')).hexdigest()
+
+    # Construct the expected Gravatar URL using the SHA-256 hash
+    expected_url = f'https://www.gravatar.com/avatar/{sha256_hash}?d=retro&s=128'
+
+    # Assert that the generated URL matches the expected URL
+    assert user1.avatar(128) == expected_url
 
 def test_follow(test_app):
     """
