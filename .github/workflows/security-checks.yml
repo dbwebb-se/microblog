@@ -7,7 +7,7 @@ on:
 jobs:
   security-checks:
     runs-on: ubuntu-latest
-    
+
     steps:
       # Checkout the repository
       - name: Checkout repository
@@ -17,13 +17,26 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Install Bandit, Trivy, and Docker
-      - name: Install Bandit, Trivy, and Docker
+      # Install necessary tools: Docker, Bandit, Trivy, and Dockle
+      - name: Install dependencies and remove conflicting containerd
         run: |
+          # Remove conflicting containerd package if it's present
+          sudo apt-get remove -y containerd
+          sudo apt-get autoremove -y
+
+          # Update apt package list
           sudo apt-get update -qq
-          sudo apt-get install -y docker.io
+
+          # Install Docker
+          sudo apt-get install -y docker.io wget curl
+
+          # Install Bandit (Python security checks)
           pip install bandit
+
+          # Install Trivy (Docker image security scanner)
           curl -s https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo bash
+
+          # Install Docker (in case it's not already installed)
           curl -fsSL https://get.docker.com | sudo sh
 
       # Run Bandit for Python security checks
@@ -37,21 +50,22 @@ jobs:
           docker build -t microblog . -f docker/Dockerfile_prod
           trivy image --skip-update --no-progress microblog
 
-      # Run Dockle for Docker image security check
+      # Run Dockle for Docker image security checks
       - name: Run Dockle Security Scan
         run: |
           docker build -t microblog . -f docker/Dockerfile_prod
           docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
           dockle --exit-code 1 microblog 2>&1 | grep -E 'FATAL|INFO' | sort
 
-      # Optional: Print reports if they exist
+      # Optional: Print Bandit Report
       - name: Print Bandit Report
         run: |
           if [ -f bandit-report.html ]; then cat bandit-report.html; fi
 
-      # Check results and push Docker image if security checks pass
+      # Push Docker image if all checks pass
       - name: Push Docker image (if all checks pass)
         if: success()  # Push the Docker image only if all checks are successful
         run: |
+          # Tag the Docker image and push to the registry
           docker tag microblog mydockerrepo/microblog:latest
           docker push mydockerrepo/microblog:latest
