@@ -23,6 +23,10 @@ jobs:
           # Remove any existing containerd package to avoid conflicts
           sudo apt-get remove -y containerd
           sudo apt-get autoremove -y
+          sudo apt-get purge -y containerd
+
+          # Ensure that any lingering containerd dependencies are cleaned up
+          sudo dpkg --purge containerd
 
           # Update apt package list
           sudo apt-get update -qq
