@@ -81,6 +81,18 @@ add-ssh:
 
 
 
+# Runs badit commando for route app/
+.PHONY: bandit
+bandit:
+	bandit -r app/ -f html -o bandit-report.html || true
+
+.PHONY: dockle
+dockle:
+	dockle --exit-code 1 weirdnessunfolds/devops:v11.1.0 2>&1 | grep -E 'FATAL|INFO' | sort
+
+
+
+
 # target: info                         - Displays versions.
 .PHONY: info
 info:
@@ -215,3 +227,24 @@ install-test:
 install-deploy:
 	${pip} install -r requirements/deploy.txt
 	cd ansible && ansible-galaxy install -r requirements.yml
+
+
+
+# target: fs-scan                        - Scan the filesystem with Trivy
+current_dir := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+
+.PHONY: fs-scan
+fs-scan:
+	@command -v trivy >/dev/null 2>&1 || { \
+		sudo apt-get update -qq && \
+		sudo apt-get install -y -qq wget && \
+		wget -qO- https://github.com/aquasecurity/trivy/releases/download/v0.45.0/trivy_0.45.0_Linux-64bit.tar.gz | tar xz && \
+		sudo mv trivy /usr/local/bin/; \
+	}
+	@trivy fs $(current_dir) --skip-dirs $(current_dir).venv --skip-dirs $(current_dir)venv
+
+target: image-scan                     - Scan the image with Trivy
+.PHONY: image-scan
+image-scan:
+	@docker build -t microblog . -f docker/Dockerfile_prod
+	@trivy image microblog
