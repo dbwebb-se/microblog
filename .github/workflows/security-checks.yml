@@ -17,17 +17,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Install necessary tools: Docker, Bandit, Trivy, and Dockle
-      - name: Install dependencies and remove conflicting containerd
+      # Install Bandit, Trivy, Docker, and handle containerd conflict
+      - name: Remove conflicting containerd and install dependencies
         run: |
-          # Remove conflicting containerd package if it's present
+          # Remove any existing containerd package to avoid conflicts
           sudo apt-get remove -y containerd
           sudo apt-get autoremove -y
 
           # Update apt package list
           sudo apt-get update -qq
 
-          # Install Docker
+          # Install necessary dependencies
           sudo apt-get install -y docker.io wget curl
 
           # Install Bandit (Python security checks)
@@ -61,11 +61,3 @@ jobs:
       - name: Print Bandit Report
         run: |
           if [ -f bandit-report.html ]; then cat bandit-report.html; fi
-
-      # Push Docker image if all checks pass
-      - name: Push Docker image (if all checks pass)
-        if: success()  # Push the Docker image only if all checks are successful
-        run: |
-          # Tag the Docker image and push to the registry
-          docker tag microblog mydockerrepo/microblog:latest
-          docker push mydockerrepo/microblog:latest
