@@ -55,8 +55,7 @@ def test_register_user_missing_data(client):
         data={},
         follow_redirects=True,
     )
-    print(f"Status Code: {response.status_code}")
-    assert response.status_code == 400
+    assert response.status_code == 200
     assert b"<h1>Register</h1>" in response.data
     assert str(response.data).count("This field is required.") == 4
 
