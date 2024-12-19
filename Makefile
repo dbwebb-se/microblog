@@ -84,7 +84,7 @@ add-ssh:
 # Runs Bandit command for route app/
 .PHONY: bandit
 bandit:
-	bandit -r app/ -f html -o bandit-report.html || true
+	bandit -r app/ || true
 
 .PHONY: dockle
 dockle:
