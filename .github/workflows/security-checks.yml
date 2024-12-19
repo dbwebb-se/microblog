@@ -35,10 +35,10 @@ jobs:
           sudo apt-get install -f
 
       # Step 4: Install Docker and containerd.io
-      - name: Install Docker and containerd.io
+      - name: Install Docker from Ubuntu repo
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y docker containerd
+          sudo apt-get install -y docker.io
 
       # Step 5: Start Docker Daemon
       - name: Start Docker Daemon
