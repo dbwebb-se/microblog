@@ -50,9 +50,6 @@ jobs:
       # Install other dependencies (Bandit, Trivy, Dockle)
       - name: Install dependencies
         run: |
-          # Install Bandit (Python security checks)
-          pip install bandit
-
           # Install Dockle (Dockerfile security checker)
           curl -s https://github.com/goodwithtech/dockle/releases/download/v0.4.14/dockle_0.4.14_Linux-64bit.tar.gz | sudo tar xz && sudo mv dockle /usr/local/bin
           
