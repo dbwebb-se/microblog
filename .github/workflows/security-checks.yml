@@ -34,11 +34,18 @@ jobs:
           sudo apt-get clean
           sudo apt-get install -f
 
-      # Step 4: Install Docker and containerd.io
+      # Step 4: Install Docker from Ubuntu repo
       - name: Install Docker from Ubuntu repo
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y docker.io
+
+      # Step 4.5: Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
 
       # Step 5: Start Docker Daemon
       - name: Start Docker Daemon
@@ -53,6 +60,7 @@ jobs:
         run: |
           docker info
           docker --version
+          docker-compose --version
 
       # Step 7: Create and initialize virtual environment
       - name: Create and initialize virtual environment
@@ -71,10 +79,8 @@ jobs:
       - name: Install security tools
         run: |
           source venv/bin/activate
-
           # Install Bandit (Python security scanner)
           pip install bandit
-
           # Install Dockle (Dockerfile security checker)
           VERSION=$(
             curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
@@ -82,7 +88,6 @@ jobs:
             sed -E 's/.*"v([^"]+)".*/\1/' \
           ) && curl -L -o dockle.deb https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.deb
           sudo dpkg -i dockle.deb && rm dockle.deb
-
           # Install Trivy (Docker image security scanner)
           curl -sL https://github.com/aquasecurity/trivy/releases/download/v0.58.0/trivy_0.58.0_Linux-64bit.tar.gz | sudo tar xz -C /usr/local/bin
 
