@@ -1,0 +1,72 @@
+name: Security Checks
+
+on:
+  workflow_dispatch:   # Allows manual triggering of the workflow
+
+jobs:
+  security-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Docker Buildx for Docker builds (if needed)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Remove Docker/containerd and perform cleanup
+      - name: Clean Docker/containerd and residual packages
+        run: |
+          # Clean apt cache and ensure system is updated
+          sudo apt-get clean
+          sudo apt-get autoremove -y
+          sudo apt-get update -qq
+
+          # Force remove Docker, containerd, and runc packages completely
+          sudo apt-get purge -y docker* containerd* runc
+
+          # Remove any residual configuration files related to Docker or containerd
+          sudo rm -rf /etc/docker /var/lib/docker /var/run/docker.sock /var/lib/containerd
+
+          # Ensure containerd is unheld
+          sudo apt-mark unhold containerd.io || true
+
+          # Clean apt cache and remove any residual dependencies
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+
+          # Attempt to fix broken packages
+          sudo apt-get install -f
+
+      # Install Docker and containerd.io
+      - name: Install Docker and containerd.io
+        run: |
+          # Install Docker and containerd.io fresh
+          sudo apt-get update -qq
+          sudo apt-get install -y docker.io containerd.io
+
+      # Install other dependencies (Bandit, Trivy, Dockle)
+      - name: Install dependencies
+        run: |
+          # Install Bandit (Python security checks)
+          pip install bandit
+
+          # Install Trivy (Docker image security scanner)
+          curl -sL https://github.com/aquasecurity/trivy/releases/download/v0.58.0/trivy_0.58.0_Linux-64bit.tar.gz | sudo tar xz -C /usr/local/bin
+
+          # Install Dockle (Dockerfile security checker)
+          curl -s https://github.com/goodwithtech/dockle/releases/download/v0.4.0/dockle-linux-amd64.tar.gz | tar xz && sudo mv dockle /usr/local/bin
+
+      # Run Bandit Security Scan
+      - name: Run Bandit Security Scan
+        run: make bandit
+
+      # Run Trivy Image Scan
+      - name: Run Trivy Image Scan
+        run: make image-scan
+
+      # Run Dockle Security Scan
+      - name: Run Dockle Security Scan
+        run: make dockle
