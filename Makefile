@@ -80,11 +80,11 @@ add-ssh:
 	ssh-add <path/too/ssh-key>
 
 
-
-# Runs badit commando for route app/
+# Runs bandit command for route app/
 .PHONY: bandit
 bandit:
-	bandit -r app/ -f html -o bandit-report.html || true
+	bandit -r app/ -f json -o bandit-report.json
+	@grep -qE '"issue_severity": "(HIGH|MEDIUM|LOW)"' bandit-report.json && { echo "Vulnerabilities found"; exit 1; } || echo "No vulnerabilities found"
 
 .PHONY: dockle
 dockle:
