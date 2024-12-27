@@ -79,8 +79,6 @@ add-ssh:
 	eval `ssh-agent -s`
 	ssh-add <path/too/ssh-key>
 
-
-
 # Runs bandit command for route app/
 .PHONY: bandit
 bandit:
