@@ -68,15 +68,18 @@ jobs:
         run: |
           source venv/bin/activate
           make bandit
+          continue-on-error: false
 
       # Step 9: Run Trivy Image Scan
       - name: Run Trivy Image Scan
         run: |
           source venv/bin/activate
           make image-scan
+          continue-on-error: false
         
       # Step 10: Run Dockle Security Scan
       - name: Run Dockle Security Scan
         run: |
           source venv/bin/activate
           make dockle
+          continue-on-error: false
