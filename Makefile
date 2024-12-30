@@ -86,7 +86,8 @@ bandit:
 
 .PHONY: dockle
 dockle:
-	dockle --exit-code 1 weirdnessunfolds/devops:v11.1.0 2>&1 | grep -E 'FATAL|INFO' | sort
+	@docker build -t microblog . -f docker/Dockerfile_prod
+	@dockle --exit-code 1 microblog 2>&1 | grep -E 'FATAL|INFO' | sort
 
 
 
