@@ -86,7 +86,7 @@ bandit:
 
 .PHONY: dockle
 dockle:
-	@docker build -t microblog . -f docker/Dockerfile_prod
+	@DOCKER_CONTENT_TRUST=1 docker build -t microblog . -f docker/Dockerfile_prod
 	@dockle --exit-code 1 microblog 2>&1 | grep -E 'FATAL|INFO' | sort
 
 
