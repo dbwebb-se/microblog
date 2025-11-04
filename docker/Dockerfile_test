@@ -1,0 +1,26 @@
+FROM python:3.8-alpine
+RUN adduser -D microblog
+
+WORKDIR /home/microblog
+
+# COPY . .
+COPY requirements requirements
+COPY requirements.txt microblog.py boot_dev.sh ./
+
+RUN python -m venv .venv
+RUN .venv/bin/pip3 install -r requirements/test.txt
+
+ENV FLASK_APP microblog.py
+
+#RUN chmod +x boot.sh
+#RUN chown -R microblog:microblog ./
+
+RUN <<-EOF
+    chmod +x boot_dev.sh
+    chown -R microblog:microblog ./
+EOF
+
+USER microblog
+
+EXPOSE 5000
+ENTRYPOINT ["./boot_dev.sh"]
