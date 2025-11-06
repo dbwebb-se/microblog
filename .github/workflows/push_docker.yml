@@ -1,0 +1,41 @@
+name: microblog-push-docker
+
+on:
+  workflow_run:
+    workflows: ["microblog-tests"]
+    types:
+      - completed
+    branches:
+      - main
+  push:
+    tags:
+      - '*'
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+        - name: Build and push Docker production image
+          uses: docker/build-push-action@v4
+          with:
+            context: ./docker/Dockerfile_prod
+            push: true
+            tags: |
+              ${{ secrets.DOCKER_USERNAME }}/microblog:${{ github.ref_name }}-prod
+
+        - name: Build and push Docker test image
+          uses: docker/build-push-action@v4
+          with:
+            context: ./docker/Dockerfile_test
+            push: true
+            tags: |
+              ${{ secrets.DOCKER_USERNAME }}/microblog:${{ github.ref_name }}-prod
+        
