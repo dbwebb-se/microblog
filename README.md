@@ -1,7 +1,7 @@
 Microblog
 ===================
 
-![workflow](https://github.com/github/docs/actions/workflows/run_tests.yml/badge.svg)
+[![microblog-tests](https://github.com/Iwinter78/microblog/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Iwinter78/microblog/actions/workflows/run_tests.yml)
 
 [![Join the chat at https://gitter.im/dbwebb-se/devops](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dbwebb-se/devops?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
