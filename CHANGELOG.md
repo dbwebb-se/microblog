@@ -1,0 +1,23 @@
+## Change Log
+All notable changes to this project will be documented in this file.
+
+The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
+
+## [Unreleased] - 2025-11-10
+## Added
+- Production Dockerfile (docker/Dockerfile_prod).
+- CHANGELOG.md, commit-conventions.txt
+## Changed
+## Fixed
+
+<!-- [1.0.0] - yyyy-mm-dd
+Here we would have the update steps for 1.0.0 for people to follow.
+Added
+Changed
+PROJECTNAME-ZZZZ PATCH Drupal.org is now used for composer.
+Fixed
+PROJECTNAME-TTTT PATCH Add logic to runsheet teaser delete to delete corresponding schedule cards. -->
+
+
+MICROBLOG-001 MINOR Add production Dockerfile for deployment
+MICROBLOG-002 MINOR Add CHANGELOG.md, commit-conventions.txt in root dir
