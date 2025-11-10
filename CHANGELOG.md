@@ -14,6 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [11.0.0] - 2025-11-10
 
-### 🎉 Initial Release
+### Initial Release
 
 - First version of the project with basic structure set up.
