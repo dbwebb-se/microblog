@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [11.1.0] - 2025-11-10
+
+### Added
+
+- Added a Dockerfile for the Microblog app in the `docker/` directory.
+- Added a `docker-compose.yml` configuration to run Microblog with a MySQL container.
+- Validated Docker setup with `make validate-docker`.
+
 ### Added
 
 - Added a commit message template to standardize commit messages.
