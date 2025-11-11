@@ -7,8 +7,10 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 ## Added
 - Production Dockerfile (docker/Dockerfile_prod).
 - CHANGELOG.md, commit-conventions.txt
+- docker-compose.yml
 ## Changed
 ## Fixed
+- docker/Dockerfile_prod
 
 <!-- [1.0.0] - yyyy-mm-dd
 Here we would have the update steps for 1.0.0 for people to follow.
@@ -21,3 +23,5 @@ PROJECTNAME-TTTT PATCH Add logic to runsheet teaser delete to delete correspondi
 
 MICROBLOG-001 MINOR Add production Dockerfile for deployment
 MICROBLOG-002 MINOR Add CHANGELOG.md, commit-conventions.txt in root dir
+MICROBLOG-003 MINOR Add docker-compose.yml in root dir
+MICROBLOG-004 PATCH Fix docker/Dockerfile_prod, some make script errors
