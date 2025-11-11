@@ -10,13 +10,13 @@ COPY migrations migrations
 COPY requirements requirements
 COPY requirements.txt microblog.py boot.sh ./
 
-RUN python -m venv .venv
-RUN .venv/bin/pip3 install -r requirements.txt
+RUN python -m venv .venv && \
+    .venv/bin/pip3 install -r requirements.txt
 
 ENV FLASK_APP microblog.py
 
-RUN chmod +x boot.sh
-RUN chown -R microblog:microblog ./
+RUN chmod +x boot.sh && \
+    chown -R microblog:microblog ./
 
 USER microblog
 
