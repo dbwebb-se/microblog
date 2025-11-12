@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [11.2.1] - 2025-11-12
 
 ### Added
 - Added a dedicated test Dockerfile (`docker/Dockerfile_test`) to run automated tests.
