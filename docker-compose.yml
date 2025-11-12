@@ -27,6 +27,12 @@ services:
     networks:
       - microblog-net
 
+  test:
+    image: abedsandeed/microblog-test:1.0.0-test
+    volumes:
+      - ./app:/home/microblog/app
+      - ./tests:/home/microblog/tests
+
 networks:
   microblog-net:
 
