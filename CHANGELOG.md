@@ -21,12 +21,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The test container installs dependencies from `requirements/test.txt`.
 - Tests automatically execute on container startup and the container stops afterward.
 
+## [11.1.1] - 2025-11-12
 
 ### Added
 
 - Added a Dockerfile for the Microblog app in the `docker/` directory.
 - Added a `docker-compose.yml` configuration to run Microblog with a MySQL container.
 - Validated Docker setup with `make validate-docker`.
+
+## [11.0.1] - 2025-11-12
 
 ### Added
 
