@@ -8,8 +8,8 @@ services:
       MYSQL_DATABASE: "microblog"
       MYSQL_USER: "microblog"
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-    # volumes:
-    #   - mysql_data:/var/lib/mysql
+    volumes:
+       - mysql_data:/var/lib/mysql
     networks:
       - microblog-net
 
@@ -30,5 +30,5 @@ services:
 networks:
   microblog-net:
 
-# volumes:
-#   mysql_data:
+volumes:
+  mysql_data:
