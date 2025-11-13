@@ -22,5 +22,16 @@ services:
     ports:
       - "5000:5000"
 
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_test
+    container_name: microblog-test
+    depends_on:
+      - MySQL
+    volumes:
+      - ./app:/home/microblog/app
+      - ./tests:/home/microblog/tests
+
 volumes:
   mysql_data: {}

@@ -8,7 +8,9 @@ The format is based on Keep a Changelog and this project adheres to Semantic Ver
 - Production Dockerfile (docker/Dockerfile_prod).
 - CHANGELOG.md, commit-conventions.txt
 - docker-compose.yml
+- Dockerfile_test
 ## Changed
+docker-compose.yml
 ## Fixed
 - docker/Dockerfile_prod
 
@@ -19,9 +21,3 @@ Changed
 PROJECTNAME-ZZZZ PATCH Drupal.org is now used for composer.
 Fixed
 PROJECTNAME-TTTT PATCH Add logic to runsheet teaser delete to delete corresponding schedule cards. -->
-
-
-MICROBLOG-001 MINOR Add production Dockerfile for deployment
-MICROBLOG-002 MINOR Add CHANGELOG.md, commit-conventions.txt in root dir
-MICROBLOG-003 MINOR Add docker-compose.yml in root dir
-MICROBLOG-004 PATCH Fix docker/Dockerfile_prod, some make script errors
