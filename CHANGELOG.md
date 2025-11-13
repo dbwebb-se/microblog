@@ -3,14 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
 
-## [Unreleased] - 2025-11-10
+## [Unreleased]
 ## Added
 - Production Dockerfile (docker/Dockerfile_prod).
 - CHANGELOG.md, commit-conventions.txt
 - docker-compose.yml
 - Dockerfile_test
+- .github/workflows/ci.yml
 ## Changed
-docker-compose.yml
+- docker-compose.yml
+- README.md
 ## Fixed
 - docker/Dockerfile_prod
 
