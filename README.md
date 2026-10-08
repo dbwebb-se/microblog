@@ -15,20 +15,31 @@ The application used in this course is based on [The flask mega tutorial](https:
 Dev environment
 ------------------
 
-Here is how you setup the development environment and start the application.
+The development environment is a dev container: a container with the tools of the course, at fixed versions. More tools are added to it as the course goes on. Here is how you setup the development environment and start the application.
+
+
+
+### Dev container
+
+1. Install Docker (Docker Desktop must be running), Git and Visual Studio Code with the extension [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). On Windows, use WSL and clone the repo inside WSL, not on the C: drive.
+2. Open the folder in VS Code and choose "Reopen in Container".
+
+The first start takes a few minutes. It creates a virtual environment in `venv/` and installs the packages for testing. Use the terminal in VS Code, it runs in the container.
+
+The application and the containers you start run on your computer, not inside the dev container. Reach them with your browser on `localhost:<port>`. `curl localhost:<port>` in the terminal inside the dev container does not reach them.
 
 
 
 ### Packages
 
-Create a virtual environment and install packages:
+The dev container installs the packages for you. Without the dev container, use Python 3.11, create a virtual environment and install the packages:
 ```
 python3 -m venv venv
 source venv/bin/activate
-make install-dev
+make install-test
 ```
 
-If you are on Windows and Cygwin you will probably have troubles installing the pip package `cryptography`. Common errors are missing `python.h`, `gcc`, `cffi` and `openssl`. 
+Later in the course `make install-dev` installs the packages for Ansible too.
 
 
 ### Database
@@ -70,16 +81,14 @@ make test
 
 ### Run application
 
-Start byt setting the FLASK_APP and FLASK_ENV env vars:
-```
-export FLASK_APP=microblog.py
-export FLASK_ENV=development
-```
-Change to use the DevConfig in `microblog.py`, uncomment `# from app.config import DevConfig` and `# app = create_app(DevConfig)` (comment `app = create_app()`).
-
 Start the app with the following command and go to `localhost:5000` in your browser.
 ```
 flask run
+```
+
+To run in debug mode, where the app reloads when you change the code:
+```
+FLASK_DEBUG=1 flask run
 ```
 
 
