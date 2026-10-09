@@ -4,3 +4,4 @@ setuptools # distutils är inte en del av standardlibrary längre utan behöver 
 boto
 boto3
 PyMySQL
+ansible-lint==26.9.0

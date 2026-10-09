@@ -1,9 +1,8 @@
 ---
+# The database should be on its own VM, but to save costs we run it on the load balancer VM.
 instances:
     - name: appserver
       type: appserver
-    - name: database
-      type: database
     - name: loadbalancer
       type: loadbalancer
 

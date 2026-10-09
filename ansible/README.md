@@ -23,17 +23,19 @@ To destroy instances use `ansible-playbook terminate_instances.yml`.
 
 #### Playbooks
 
-We have 4 playbooks `provision_instances`, `terminate_instances`, `gather_instances`, `site`.
+We have 6 playbooks `provision_instances`, `terminate_instances`, `gather_instances`, `stop_instances`, `start_instances` and `site`.
 
-**provision_instances** is used to create 3 servers on Azure together with their respective security groups, network settings and storage.   
+**provision_instances** is used to create the servers, listed in `roles/provision_instances/vars/main.yml`, on Azure together with their respective security groups, network settings and storage.   
 It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load balancers ip to your domain name.
 
 **gather__instances** fins all active virtual machines has an ip address connected to it and, adds them to the hosts. After we have run this playbook we can use the following hosts in other playbooks: 
-- `appserver` only the server for the app
-- `database` only for the database server
+- `appserver` only the servers for the app
 - `loadbalancer` only the load balancer server
+- `database` the database server. The database should be on its own VM, but to save costs we run it on the load balancer VM, so this group contains the same server as `loadbalancer`.
 
-**terminate_instances** destroys virtual machines and assets connected to it. You can choose which ones to remove by changing the `instances` variable inside its `vars/main.yml` file.
+**terminate_instances** destroys all virtual machines that `gather_instances` finds, and the network interfaces, IP addresses, disks, security groups and network connected to them. Data on the servers is lost.
+
+**stop_instances** stops (deallocates) all VMs in the resource group. A stopped VM costs no compute, you only pay for its disk and IP address, so stop your VMs when you are not working. **start_instances** starts them again. The VMs keep their IP addresses and disks.
 
 **site** should run all of your playbooks to setup the whole project from scratch to a running production.
 
