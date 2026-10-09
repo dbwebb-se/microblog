@@ -100,8 +100,8 @@ validate:
 # target: validate-docker              - Validate Dockerfile with hadolint
 .PHONY: validate-docker
 validate-docker:
-	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
-	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_test
+	@docker run --rm -i hadolint/hadolint:v2.15.1 < docker/Dockerfile_prod
+	@docker run --rm -i hadolint/hadolint:v2.15.1 < docker/Dockerfile_test
 
 
 
@@ -214,5 +214,5 @@ install-test:
 .PHONY: install-deploy
 install-deploy:
 	${pip} install -r requirements/deploy.txt
-	${pip} install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
 	cd ansible && ansible-galaxy install -r requirements.yml --force
+	${pip} install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
