@@ -1,0 +1,38 @@
+# Stop all VMs in the resource group, to save money.
+# A stopped (deallocated) VM costs no compute, you only pay for its disk and IP address.
+# The IP addresses and the disks are kept, so start_instances.yml brings everything back.
+---
+-   name: Stop the VMs
+    hosts: local
+    connection: local
+    gather_facts: False
+    collections:
+        - azure.azcollection
+    tasks:
+        -   name: Get all VMs in the resource group
+            azure_rm_virtualmachine_info:
+                resource_group: "{{ resource_group }}"
+            register: az_facts
+
+        -   name: Stop the VMs, all at once
+            azure_rm_virtualmachine:
+                resource_group: "{{ resource_group }}"
+                name: "{{ item.name }}"
+                allocated: false
+            loop: "{{ az_facts.vms }}"
+            loop_control:
+                label: "{{ item.name }}"
+            async: 600
+            poll: 0
+            register: stop_jobs
+
+        -   name: Wait until the VMs are stopped
+            async_status:
+                jid: "{{ item.ansible_job_id }}"
+            loop: "{{ stop_jobs.results }}"
+            loop_control:
+                label: "{{ item.item.name }}"
+            register: stop_result
+            until: stop_result.finished
+            retries: 60
+            delay: 10

@@ -1,0 +1,39 @@
+# Start all VMs in the resource group that were stopped with stop_instances.yml.
+# The VMs keep their IP addresses and disks, so the domain name and everything on the servers still work.
+---
+-   name: Start the VMs
+    hosts: local
+    connection: local
+    gather_facts: False
+    collections:
+        - azure.azcollection
+    tasks:
+        -   name: Get all VMs in the resource group
+            azure_rm_virtualmachine_info:
+                resource_group: "{{ resource_group }}"
+            register: az_facts
+
+        -   name: Start the VMs, all at once
+            azure_rm_virtualmachine:
+                resource_group: "{{ resource_group }}"
+                name: "{{ item.name }}"
+                vm_size: "{{ item.vm_size }}"
+                allocated: true
+                started: true
+            loop: "{{ az_facts.vms }}"
+            loop_control:
+                label: "{{ item.name }}"
+            async: 600
+            poll: 0
+            register: start_jobs
+
+        -   name: Wait until the VMs are started
+            async_status:
+                jid: "{{ item.ansible_job_id }}"
+            loop: "{{ start_jobs.results }}"
+            loop_control:
+                label: "{{ item.item.name }}"
+            register: start_result
+            until: start_result.finished
+            retries: 60
+            delay: 10

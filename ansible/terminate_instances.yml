@@ -1,4 +1,4 @@
-# Gather EC2 facts from remote instance
+# Gather Azure facts from remote instance
 ---
 -   hosts: local
     connection: local

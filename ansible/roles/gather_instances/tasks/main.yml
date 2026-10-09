@@ -28,6 +28,17 @@
 
 
 
+-   name: Add the load balancer VM to the group database
+    # The database should be on its own VM, but to save costs we run it on the load balancer VM.
+    add_host:
+        name: "{{ item.tags.PublicIP }}"
+        groups:
+        - database
+    with_items: "{{ az_facts.vms }}"
+    when: item.tags.PublicIP is defined and item.power_state == "running" and item.tags.Type == "loadbalancer"
+
+
+
 -   name: Display all variables/facts known for a host
     debug:
         var: hostvars
