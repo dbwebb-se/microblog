@@ -1,4 +1,9 @@
 ---
+# The IP addresses of the app servers and the load balancer, known after gather_instances has run.
+# Before that (when the VMs are created) everyone is allowed, security_groups.yml tightens the rules afterwards.
+# kmom03: use these in the rules that should not be open to everyone, instead of '0.0.0.0/0'.
+app_sources: "{{ groups.get('appserver', []) | map('regex_replace', '$', '/32') | list or ['0.0.0.0/0'] }}"
+lb_sources: "{{ groups.get('loadbalancer', []) | map('regex_replace', '$', '/32') | list or ['0.0.0.0/0'] }}"
 sg_groups:
     -   name: loadbalancer
         port_rules:

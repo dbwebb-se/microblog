@@ -23,7 +23,7 @@ To destroy instances use `ansible-playbook terminate_instances.yml`.
 
 #### Playbooks
 
-We have 6 playbooks `provision_instances`, `terminate_instances`, `gather_instances`, `stop_instances`, `start_instances` and `site`.
+We have 7 playbooks `provision_instances`, `terminate_instances`, `gather_instances`, `security_groups`, `stop_instances`, `start_instances` and `site`.
 
 **provision_instances** is used to create the servers, listed in `roles/provision_instances/vars/main.yml`, on Azure together with their respective security groups, network settings and storage.   
 It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load balancers ip to your domain name.
@@ -32,6 +32,8 @@ It Uses the roles provision_instances that waits for all of the security_groups 
 - `appserver` only the servers for the app
 - `loadbalancer` only the load balancer server
 - `database` the database server. The database should be on its own VM, but to save costs we run it on the load balancer VM, so this group contains the same server as `loadbalancer`.
+
+**security_groups** updates the security groups after `gather_instances` has run, when the IP addresses of the servers are known. The groups are first created when the servers are provisioned, with rules that do not know the IP addresses yet, `roles/security_groups/vars/main.yml` has the variables `app_sources` and `lb_sources` for the rules that should only allow the servers.
 
 **terminate_instances** destroys all virtual machines that `gather_instances` finds, and the network interfaces, IP addresses, disks, security groups and network connected to them. Data on the servers is lost.
 
