@@ -1,6 +1,6 @@
 // Dev container for the devops course. Open the repo in VS Code and choose
 // "Reopen in Container". Clone the repo inside WSL on Windows, not on the C: drive.
-// Tools are added kmom by kmom. This version has what kmom01 and kmom02 need.
+// Has the tools for the whole course.
 {
     "name": "devops-microblog",
     "build": {
@@ -10,7 +10,9 @@
         "args": {
             "PYTHON_IMAGE": "python:3.11.17-slim-bookworm",
             "COMPOSE_VERSION": "2.40.3",
-            "AZURE_CLI_VERSION": "2.91.0"
+            "AZURE_CLI_VERSION": "2.91.0",
+            "KUBECTL_VERSION": "1.35.9",
+            "HELM_VERSION": "3.22.0"
         }
     },
 
@@ -38,7 +40,9 @@
         // The student's own SSH keys, used for git over ssh.
         "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,type=bind",
         // Keeps `az login` when the container is rebuilt.
-        "source=devops-azure,target=/home/dev/.azure,type=volume"
+        "source=devops-azure,target=/home/dev/.azure,type=volume",
+        // Keeps the kubectl config for the AKS cluster when the container is rebuilt.
+        "source=devops-kube,target=/home/dev/.kube,type=volume"
     ],
 
     "remoteUser": "dev",
