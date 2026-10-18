@@ -1,9 +1,4 @@
 ---
--   name: Set root password
-    user:
-        name: root
-        password: "{{ root_password }}"
-
 -   name: Update apt-cache and upgrade
     apt:
         force_apt_get: yes
@@ -56,7 +51,6 @@
 -   name: Create user
     user:
         name: "{{ server_user }}"
-        password: "{{ server_user_pass }}"
         state: present
         shell: /bin/bash
         groups: "{{ server_user_groups }}"
