@@ -36,9 +36,3 @@
         - "{{ group_prefix }}database"
     with_items: "{{ az_facts.vms }}"
     when: item.tags.PublicIP is defined and item.power_state == "running" and item.tags.Type == "loadbalancer"
-
-
-
--   name: Display all variables/facts known for a host
-    debug:
-        var: hostvars

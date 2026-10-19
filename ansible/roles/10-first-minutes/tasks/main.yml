@@ -1,9 +1,4 @@
 ---
--   name: Set root password
-    user:
-        name: root
-        password: "{{ root_password }}"
-
 -   name: Update apt-cache and upgrade
     apt:
         force_apt_get: yes
@@ -15,6 +10,31 @@
     apt:
         force_apt_get: yes
         name: "{{ packages }}"
+
+-   name: Create a swap file
+    # The VMs have 1 GB RAM. The load balancer VM also runs Docker and MySQL, without swap it can run out of memory
+    # during the first start of MySQL and then stops answering on SSH.
+    command: fallocate -l 1G /swapfile
+    args:
+        creates: /swapfile
+
+-   name: Set the permissions of the swap file
+    file:
+        path: /swapfile
+        owner: root
+        group: root
+        mode: "600"
+
+-   name: Format and enable the swap file
+    shell: mkswap /swapfile && swapon /swapfile
+    when: ansible_swaptotal_mb == 0
+
+-   name: Enable the swap file at boot
+    lineinfile:
+        path: /etc/fstab
+        line: "/swapfile none swap sw 0 0"
+        regexp: '^/swapfile '
+        state: present
 
 -   name: Copy unattended upgrades 10 settings
     copy:
@@ -31,7 +51,6 @@
 -   name: Create user
     user:
         name: "{{ server_user }}"
-        password: "{{ server_user_pass }}"
         state: present
         shell: /bin/bash
         groups: "{{ server_user_groups }}"
