@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1.4
+FROM python:3.8-alpine
+
+# Alpine package versions change with every Alpine release, a pinned version would break the build.
+# hadolint ignore=DL3018
+RUN apk add --no-cache make
+
+WORKDIR /home/microblog
+
+COPY requirements requirements
+COPY Makefile pytest.ini .pylintrc .coveragerc ./
+COPY docker/test.sh ./
+
+RUN pip install --no-cache-dir -r requirements/test.txt
+
+# app and tests are mounted as volumes, see docker-compose.yml
+ENTRYPOINT ["./test.sh"]
