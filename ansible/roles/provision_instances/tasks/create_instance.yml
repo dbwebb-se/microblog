@@ -3,6 +3,7 @@
     azure_rm_publicipaddress:
         resource_group: "{{ resource_group }}"
         allocation_method: Static
+        sku: Standard # Azure no longer allows new Basic IP addresses. A Standard IP costs money also when the VM is stopped.
         name: "{{ iname }}-ip"
         tags: "{{ vmtags }}"
     delegate_to: localhost

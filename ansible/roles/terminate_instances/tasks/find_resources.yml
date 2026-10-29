@@ -1,0 +1,21 @@
+---
+-   name: Get the VMs
+    azure_rm_virtualmachine_info:
+        resource_group: "{{ resource_group }}"
+        tags:
+            - "StudentId:{{ vmtags.StudentId }}"
+    register: vms
+
+-   name: Get the network interfaces
+    azure_rm_networkinterface_info:
+        resource_group: "{{ resource_group }}"
+        tags:
+            - "StudentId:{{ vmtags.StudentId }}"
+    register: nics
+
+-   name: Get the public IP addresses
+    azure_rm_publicipaddress_info:
+        resource_group: "{{ resource_group }}"
+        tags:
+            - "StudentId:{{ vmtags.StudentId }}"
+    register: ips
