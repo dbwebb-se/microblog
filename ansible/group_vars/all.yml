@@ -2,6 +2,7 @@
 # Here you can add variables that will be available for all hosts.
 ansible_python_interpreter: "python3"
 
+# Where the VMs, network and IP addresses are created. Must be a location that your resource group and the school's policy allow.
 region: northeurope
 resource_group: <your resource group> # Change me
 domain_name: <your domain> # Change me

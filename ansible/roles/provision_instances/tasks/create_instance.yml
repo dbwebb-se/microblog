@@ -5,6 +5,7 @@
         allocation_method: Static
         sku: Standard # Azure no longer allows new Basic IP addresses. A Standard IP costs money also when the VM is stopped.
         name: "{{ iname }}-ip"
+        location: "{{ region }}"
         tags: "{{ vmtags }}"
     delegate_to: localhost
     register: output_ip_address
@@ -17,6 +18,7 @@
     azure_rm_networkinterface:
         resource_group: "{{ resource_group }}"
         name: "{{ iname }}-NIC"
+        location: "{{ region }}"
         virtual_network: "microblog-Vnet"
         subnet: "microblog-Subnet"
         ip_configurations:
@@ -47,6 +49,7 @@
     azure_rm_virtualmachine:
         resource_group: "{{ resource_group }}"
         name: "{{ iname }}-VM"
+        location: "{{ region }}"
         admin_username: "{{ root_user }}"
         ssh_password_enabled: false
         ssh_public_keys:
