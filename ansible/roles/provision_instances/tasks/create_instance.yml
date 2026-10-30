@@ -55,7 +55,7 @@
         ssh_public_keys:
             - path: "/home/{{ root_user }}/.ssh/authorized_keys"
               key_data: "{{ lookup('file', pub_ssh_key_location) }}"
-        vm_size: Standard_B1s
+        vm_size: "{{ vm_size }}"
         network_interfaces: "{{ iname }}-NIC"
         managed_disk_type: Standard_LRS
         os_disk_size_gb: 30
