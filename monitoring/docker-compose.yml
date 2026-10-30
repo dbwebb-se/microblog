@@ -1,5 +1,5 @@
 # Adds the monitoring stack to the project's docker-compose.yml. Start with:
-#   docker compose -f docker-compose.yml -f monitoring/docker-compose.yml up -d prod prometheus alertmanager grafana
+#   docker compose -f docker-compose.yml -f monitoring/docker-compose.yml up -d --build prod prometheus alertmanager grafana
 # Paths are relative to the first file, docker-compose.yml in the root of the repo.
 services:
   prometheus:
