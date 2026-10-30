@@ -10,17 +10,6 @@ docker-compose file [split in multiple files](https://medium.com/vteam/configure
 
 ### Known Errors
 
-#### Missing credential-desktop in WSL
-
-`docker.errors.DockerException: Credentials store error: StoreError('docker-credential-docker-credential-desktop.exe not installed or not available in PATH',)`
-
-Solution:
-Open `~/.docker/config.json` and add `.exe` to the `credsStore`. 
-```
-"credsStore":"desktop.exe"
-```
-
-
 #### Missing gcc when installing python modules in docker slim/alpine:
 
 Error:
@@ -30,13 +19,13 @@ unable to execute 'gcc': No such file or directory
 ```
 Solution:
 
-Install `gcc` and modules in one command.
+Some Python packages are compiled when they are installed and need build tools, which Alpine images do not have. Install the tools, install the packages and remove the tools again in one `RUN`, so the tools do not stay in the image:
 
 ```
-# hadolint ignore=DL3013,DL3018
-RUN apk --no-cache add --virtual build-dependencies libffi-dev openssl-dev py-pip build-base \
-  && pip install --upgrade pip \
-  && pip install -r requirements.txt \
+# hadolint ignore=DL3018
+RUN apk --no-cache add --virtual build-dependencies build-base libffi-dev openssl-dev \
+  && pip install --no-cache-dir -r requirements/prod.txt \
   && apk del build-dependencies
 ```
-This will install `gcc` dependencies in a virtual environment for apt-get. Replace `<requirements-file>` with the file you want to install from. The last line will remove the virtual environment for apt-get again. We only need `gcc` for installing our python modules, therefore we don't need it after we have installed them and we want to limit the size of the image as much as possible.
+
+Change the file after `-r` if you install from another requirements file. We only need the build tools while the packages are installed, so removing them keeps the image small.
