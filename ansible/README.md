@@ -28,14 +28,14 @@ We have 7 playbooks `provision_instances`, `terminate_instances`, `gather_instan
 **provision_instances** is used to create the servers, listed in `roles/provision_instances/vars/main.yml`, on Azure together with their respective security groups, network settings and storage.   
 It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load balancers ip to your domain name.
 
-**gather__instances** fins all active virtual machines has an ip address connected to it and, adds them to the hosts. After we have run this playbook we can use the following hosts in other playbooks: 
+**gather_instances** finds all active virtual machines has an ip address connected to it and, adds them to the hosts. After we have run this playbook we can use the following hosts in other playbooks: 
 - `appserver` only the servers for the app
 - `loadbalancer` only the load balancer server
 - `database` the database server. The database should be on its own VM, but to save costs we run it on the load balancer VM, so this group contains the same server as `loadbalancer`.
 
 **security_groups** updates the security groups after `gather_instances` has run, when the IP addresses of the servers are known. The groups are first created when the servers are provisioned, with rules that do not know the IP addresses yet, `roles/security_groups/vars/main.yml` has the variables `app_sources` and `lb_sources` for the rules that should only allow the servers.
 
-**terminate_instances** destroys all virtual machines that `gather_instances` finds, and the network interfaces, IP addresses, disks, security groups and network connected to them. Data on the servers is lost.
+**terminate_instances** destroys all virtual machines, network interfaces, IP addresses and disks that have your `StudentId` tag (also stopped VMs, and leftovers from a provisioning that failed halfway), the DNS records for `@` and `www` that `provision_instances` created, and then the security groups and the network. Data on the servers is lost.
 
 **stop_instances** stops (deallocates) all VMs in the resource group. A stopped VM costs no compute, you only pay for its disk and IP address, so stop your VMs when you are not working. **start_instances** starts them again. The VMs keep their IP addresses and disks.
 
@@ -58,7 +58,7 @@ It Uses the roles provision_instances that waits for all of the security_groups 
 ### Credentials
 
 #### ssh-keys
-Without ssh-key files we need to enter the password for out ssh-key every time we run a task. To avoid this, make sure you have added your ssh-key to the ssh-agent. Do following commands or run `make add-ssh` in root folder (you need to replace <path-to-ssh-key> in `Makefile` to use this command).
+Without ssh-key files we need to enter the password for our ssh-key every time we run a task. To avoid this, make sure you have added your ssh-key to the ssh-agent. Do following commands or run `make add-ssh` in root folder (you need to replace <path-to-ssh-key> in `Makefile` to use this command).
 
 ```
 eval "$(ssh-agent -s)"
@@ -90,7 +90,7 @@ EOF
 
 Create a new ENV variable with the path to the password file, `ANSIBLE_VAULT_PASSWORD_FILE=<path-to-file>`.
 
-Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password. Once you have enrypted a file and want to update it, you can use the command `ansible-vault edit`. It will decrypt the file, open teh file and when you close the file it will encrypt the file again.
+Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password. Once you have encrypted a file and want to update it, you can use the command `ansible-vault edit`. It will decrypt the file, open the file and when you close the file it will encrypt the file again.
 
 
 
@@ -121,8 +121,6 @@ Needed the following for Ansible to read the `hosts` file (which parser it shoul
 enable_plugins = ini
 ```
 
-```
-
 
 
 ### Run locally
@@ -150,7 +148,7 @@ In the playbook to use the local host:
 
 #### Check syntax
 
-When you are developing it is rekommended to check the syntax of your code before you run the playbook. Otherwise you might manage to execute half the playbook before you encounter an error because of your syntax.
+When you are developing it is recommended to check the syntax of your code before you run the playbook. Otherwise you might manage to execute half the playbook before you encounter an error because of your syntax.
 
 `ansible-playbook <playbook>.yml --syntax-check`
 
@@ -190,31 +188,3 @@ Example:
 ```bash
 $ ansible-playbook site.yml -vvv
 ```
-
-
-
-### Known Errors
-
-#### Encoding Error
-
-If you get the following error:
-
-```
-File "microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py", line 3779, in _make_request
-  return json.loads(body)
-File "/usr/lib/python3.5/json/__init__.py", line 312, in loads
-  s.__class__.__name__))
-TypeError: the JSON object must be str, not 'bytes'
-
-.......
-
-File \"microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 1522, in describe_db_instances\n    path='/', params=params)\n  File \"../git/microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 3779, in _make_request\n    return json.loads(body)\n  File \"/usr/lib/python3.5/json/__init__.py\", line 312, in loads\n    s.__class__.__name__))\nTypeError: the JSON object must be str, not 'bytes'\n",
-    "module_stdout": "",
-    "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error",
-    "rc": 1
-}
-```
-
-Open the file `venv/lib/python3.5/site-packages/boto/rds2/layer1.py` and go to line 3779 (this can change), look for the line `return json.loads(body)`. Add a new line before that one with `body = response.read().decode('utf-8')`.
-
-You can read about the error here, https://github.com/boto/boto/issues/2677.
