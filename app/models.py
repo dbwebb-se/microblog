@@ -3,11 +3,20 @@ Contains Databse model classes
 """
 
 from hashlib import md5
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db, login
+
+
+def utcnow():
+    """
+    Current UTC time without time zone info, like the DateTime columns store it.
+    datetime.utcnow() is deprecated since Python 3.12.
+    """
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
 
 class User(UserMixin, db.Model):
     """
@@ -18,7 +27,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=utcnow)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
@@ -61,7 +70,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140))
     body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
