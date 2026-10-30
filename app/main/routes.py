@@ -1,12 +1,11 @@
 """
 Contains routes for main purpose of app
 """
-from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, current_app
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import EditProfileForm, PostForm
-from app.models import User, Post
+from app.models import User, Post, utcnow
 from app.main import bp
 
 
@@ -17,7 +16,7 @@ def before_request():
     update last_seen for User before handling request
     """
     if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
+        current_user.last_seen = utcnow()
         current_app.logger.debug(f"{current_user} is authenticated")
         db.session.commit()
 
