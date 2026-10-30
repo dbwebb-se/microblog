@@ -1,7 +1,28 @@
 ---
+# The first run connects as the user Azure created (root_user). The role then creates server_user and removes root_user,
+# so on every later run root_user can not log in. This play checks which one works and sets ansible_user,
+# which takes precedence over remote_user in the next play. That makes the playbook possible to run again.
+-   name: Find the user that can log in
+    hosts:
+        -   devops
+    gather_facts: False
+    remote_user: "{{ root_user }}"
+    tasks:
+        -   name: Try to log in as the Azure user
+            ping:
+            ignore_unreachable: True
+            register: azure_user_login
+
+        -   name: Use the server user, the Azure user is already removed
+            set_fact:
+                ansible_user: "{{ server_user }}"
+            when: azure_user_login is unreachable
+
+
+
 -   hosts:
         -   devops
-    remote_user: azureuser
+    remote_user: "{{ root_user }}"
     become: yes
     become_method: sudo
     roles:

@@ -94,7 +94,17 @@
         regexp: "^AllowUsers"
         line: "AllowUsers {{ server_user }}"
         state: present
-    # ignore_errors: yes
+        validate: '/usr/sbin/sshd -T -f %s'
+    register: allow_users
+
+-   name: Restart SSH so AllowUsers is used
+    # Not a handler: handlers run at the end of the play, when the connection user azureuser is already removed.
+    # Connect as the new user, and only restart when the line changed, so a second run does nothing.
+    remote_user: "{{ server_user }}"
+    service:
+        name: ssh
+        state: restarted
+    when: allow_users is changed
 
 -   name: Remove default user
     remote_user: "{{ server_user }}"

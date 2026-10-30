@@ -3,7 +3,7 @@
 # Check again with a new Trivy run before each course start, the vulnerability database changes.
 #
 # Replace the packages in prod.txt with these. The upgrade breaks things in the code, you fix those yourself.
-# gunicorn==23.0.0 and pymysql==1.1.1 are pinned in requirements.txt, not here.
+# gunicorn==23.0.0 and pymysql==1.1.1 are not in this list. Pin them in requirements.txt, these are the tested versions.
 Flask==3.0.3
 SQLAlchemy==2.0.36
 Flask-Bootstrap==3.3.7.1

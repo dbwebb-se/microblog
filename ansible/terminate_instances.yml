@@ -1,24 +1,58 @@
-# Gather Azure facts from remote instance
+# Terminate All Instances
 ---
--   hosts: local
-    connection: local
+# Finds the resources through their tags (vmtags in group_vars/all.yml) and not through running VMs, so a stopped VM
+# or a half-finished provisioning (a NIC or an IP address without a VM) is removed too. Otherwise the leftovers
+# stop the subnet from being removed and site.yml can not be run again.
+-   name: remove instances
+    hosts: local
     gather_facts: False
     collections:
         - azure.azcollection
-    roles:
-        -   role: gather_instances
-            group_prefix: old_
+    tasks:
+        -   include_vars: roles/provision_instances/vars/main.yml
 
+        -   name: Find the VMs, network interfaces and IP addresses of the student
+            include_tasks: roles/terminate_instances/tasks/find_resources.yml
 
+        -   name: Remove the VMs and their disks
+            azure_rm_virtualmachine:
+                resource_group: "{{ resource_group }}"
+                name: "{{ item.name }}"
+                state: absent
+                remove_on_absent:
+                    - virtual_storage
+            loop: "{{ vms.vms }}"
+            loop_control:
+                label: "{{ item.name }}"
 
--   name: remove instance
-    hosts: old_devops
-    connection: local
-    gather_facts: False
-    collections:
-        - azure.azcollection
-    roles:
-        - terminate_instances
+        -   name: Remove the network interfaces
+            azure_rm_networkinterface:
+                resource_group: "{{ resource_group }}"
+                name: "{{ item.name }}"
+                state: absent
+            loop: "{{ nics.networkinterfaces }}"
+            loop_control:
+                label: "{{ item.name }}"
+
+        -   name: Remove the public IP addresses
+            azure_rm_publicipaddress:
+                resource_group: "{{ resource_group }}"
+                name: "{{ item.name }}"
+                state: absent
+            loop: "{{ ips.publicipaddresses }}"
+            loop_control:
+                label: "{{ item.name }}"
+
+        -   name: Remove the "A" records created by provision_instances
+            azure_rm_dnsrecordset:
+                resource_group: "{{ resource_group }}"
+                relative_name: "{{ item.name }}"
+                zone_name: "{{ domain_name }}"
+                record_type: A
+                state: absent
+            loop: "{{ relative_names }}"
+            loop_control:
+                label: "{{ item.name }}"
 
 
 

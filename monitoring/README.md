@@ -3,7 +3,7 @@
 Configuration for Prometheus, Alertmanager and Grafana. It is used in kmom04 and runs locally with docker compose, on top of your own `docker-compose.yml` (it needs a service named `prod`):
 
 ```
-docker compose -f docker-compose.yml -f monitoring/docker-compose.yml up -d prod prometheus alertmanager grafana
+docker compose -f docker-compose.yml -f monitoring/docker-compose.yml up -d --build prod prometheus alertmanager grafana
 ```
 
 - Prometheus: <http://localhost:9090>
