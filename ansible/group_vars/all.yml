@@ -9,6 +9,9 @@ domain_name: <your domain> # Change me
 
 admin_email: <an email>
 
+# The VM size. Azure's policy for the course only allows some sizes, and a size can be out of capacity in a region.
+vm_size: Standard_B2ts_v2
+
 vmtags:
     StudentId: <acronym> # Change me
 
