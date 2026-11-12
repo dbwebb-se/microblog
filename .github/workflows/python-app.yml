@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Dockerfiles
+        run: make validate-docker
+
+      - name: Run tests
+        run: docker compose up --build --exit-code-from test test
