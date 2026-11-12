@@ -120,4 +120,4 @@ Feel free to help building up the repository with more content suited for traini
 
 Actions badge
 --------------
-[![Test](https://github.com/sibo18-sim/microblog/actions/workflows/python-app.yml/badge.svg)](https://github.com/sibo18-sim/microblog/actions/workflows/python-app.yml)
+[![Test](https://github.com/sibo18-sim/microblog/actions/workflows/ci.yml/badge.svg)](https://github.com/sibo18-sim/microblog/actions/workflows/ci.yml)
