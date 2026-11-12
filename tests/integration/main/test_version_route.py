@@ -16,8 +16,8 @@ def test_version_route_custom_value(client, test_app):
     """
     Test version route with custom value
     """
-    test_app.config['APP_VERSION'] = '11.0.1'
+    test_app.config['APP_VERSION'] = '11.0.0'
     response = client.get('/version')
 
     assert response.status_code == 200
-    assert response.data == b'11.0.1'
+    assert response.data == b'11.0.0'
