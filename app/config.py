@@ -12,7 +12,7 @@ from flask import request
 basedir = os.path.abspath(os.path.dirname(__file__) +  "/..")
 load_dotenv(os.path.join(basedir, '.env'))
 
-
+APP_VERSION = os.environ.get('APP_VERSION', 'unknown')
 
 class Config():
     """Base configuration"""
