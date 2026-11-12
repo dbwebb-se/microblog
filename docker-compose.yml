@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: microblog
+      MYSQL_USER: microblog
+      MYSQL_PASSWORD: 1sibo18
+
+  prod:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_prod
+
+    ports:
+      - "8000:5000"
+
+    environment:
+      SECRET_KEY: my-secret-key
+      DATABASE_URL: mysql+pymysql://microblog:1sibo18@mysql/microblog
+
+    depends_on:
+      - mysql
+
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_test
+
+    volumes:
+      - ./app:/home/microblog/app
+      - ./tests:/home/microblog/tests
+
+    environment:
+      DATABASE_URL: mysql+pymysql://microblog:1sibo18@mysql/microblog
+
+    depends_on:
+      - mysql

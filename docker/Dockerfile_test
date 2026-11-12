@@ -1,0 +1,27 @@
+# syntax=docker/dockerfile:1.4
+
+FROM python:3.8-alpine
+
+WORKDIR /home/microblog
+
+# hadolint ignore=DL3018
+RUN apk add --no-cache make
+
+COPY requirements requirements
+COPY requirements.txt ./
+
+COPY Makefile ./
+COPY pytest.ini ./
+COPY .pylintrc ./
+COPY .coveragerc ./
+
+COPY docker/test.sh docker/test.sh
+
+RUN <<EOF
+pip install --no-cache-dir -r requirements/test.txt
+chmod +x docker/test.sh
+EOF
+
+ENV PYTHONDONTWRITEBYTECODE=1
+
+ENTRYPOINT ["docker/test.sh"]
